@@ -7,9 +7,15 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class HomeController {
 
-  @GetMapping("/index")
+  @GetMapping("/home")
   public ModelAndView home() {
-    ModelAndView modelAndView = new ModelAndView("index"); // Trả về index.jsp trong /WEB-INF/views/
-    return modelAndView;
+    // Trả về index.jsp trong /WEB-INF/views/
+    return new ModelAndView("index");
+  }
+
+  @GetMapping("/register")
+  public ModelAndView register() {
+    // Trả về index.jsp trong /WEB-INF/views/
+    return new ModelAndView("web/register");
   }
 }
