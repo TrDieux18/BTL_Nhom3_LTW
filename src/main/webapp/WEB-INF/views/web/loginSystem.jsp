@@ -1,12 +1,11 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<!DOCTYPE html>
+
+<%@ page contentType="text/html;charset=UTF-8" language="java" %><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/vendor/bootstrap/css/bootstrap.min.css" />
-    <title>Đăng kí</title>
+    <title>Đăng nhập</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/admin/css/reset.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/admin/css/base.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/admin/css/styles.css" />
@@ -59,10 +58,9 @@
                                     ></a>
                                 </li>
                                 <li>
-                                    <a href="loginSystem" style="text-decoration: none">
+                                    <a href="login" style="text-decoration: none;">
                                         <button id="openLogin">
-                                            <i class="fa-solid fa-circle-user nav-icon"></i>Đăng
-                                            nhập
+                                            <i class="fa-solid fa-circle-user nav-icon"></i>Đăng nhập
                                         </button>
                                     </a>
                                 </li>
@@ -83,7 +81,7 @@
                     id="carouselExampleIndicators"
                     class="carousel slide"
                     data-ride="carousel"
-                    data-interval="2000"
+                    data-interval="3000"
             >
                 <ol class="carousel-indicators">
                     <li
@@ -109,38 +107,9 @@
     </section>
 
     <!-- Phần form đăng ký -->
-    <section class="register-form">
-        <form id="registerForm" >
-            <h2>Đăng ký tài khoản</h2>
-            <div class="form-group">
-                <label for="fullname">Họ và tên</label>
-                <input
-                        id="fullname"
-                        placeholder="Nhập họ và tên"
-                        type="text"
-                />
-                <div id="fullnameError" style="color: var(--color-red); display: none;" >Không được để trống Họ và Tên</div>
-            </div>
-
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input
-                        id="email"
-                        placeholder="Nhập địa chỉ email"
-                        type="email"
-                />
-                <div id="emailError" style="color: var(--color-red); display: none;" >Không được để trống Email</div>
-            </div>
-            <div class="form-group">
-                <label for="phone">Số điện thoại</label>
-                <input
-                        id="phone"
-                        placeholder="Nhập số điện thoại"
-                        type="text"
-                />
-                <div id="phoneError" style="color: var(--color-red); display: none;" >Không được để trống Số điện thoại</div>
-            </div>
-
+    <section class="login-form">
+        <form id="loginForm" method="post" action="/login">
+            <h2>Đăng nhập tài khoản</h2>
             <div class="form-group">
                 <label for="username">Tên tài khoản</label>
                 <input
@@ -148,41 +117,31 @@
                         id="username"
                         placeholder="Nhập tên tài khoản"
                 />
-                <div id="usernameError" style="color: var(--color-red); display: none;" >Không được để trống Tên tài khoản</div>
             </div>
             <div class="form-group">
                 <label for="password">Mật khẩu</label>
                 <input
+                        type="password"
                         id="password"
                         placeholder="Nhập mật khẩu"
-                        type="password"
                 />
-                <div id="passwordError" style="color: var(--color-red); display: none;" >Không được để trống Mật khẩu</div>
             </div>
-            <div class="form-group">
-                <label for="address">Địa chỉ</label>
-                <input
-                        id="address"
-                        placeholder="Nhập địa chỉ"
-                        type ="text"
-                />
-                <div id="addressError" style="color: var(--color-red); display: none;" >Không được để trống Địa chỉ</div>
+            <div id="alertError" class="alert alert-danger" style="display: none;" role="alert">
+                Tài khoản hoặc mật khẩu không đúng.
             </div>
 
-            <button style="width: 100%" type="submit" class="btn btn-danger">
-                Đăng ký
-            </button>
+            <button style="width: 100%;" type="submit" class="btn btn-danger">Đăng nhập</button>
 
             <div class="login-link">
-                Bạn đã có tài khoản? <a href="loginSystem">Đăng nhập ngay</a>
+                Bạn chưa có tài khoản? <a href="register">Đăng kí ngay</a>
             </div>
         </form>
     </section>
 </main>
-<!-- <Script> -->
-<script src="${pageContext.request.contextPath}/admin/js/register.js"></script>
+<script src="${pageContext.request.contextPath}/admin/js/login.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
+

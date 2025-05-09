@@ -22,7 +22,7 @@
             <div class="col-12">
                 <div class="inner-main">
                     <div class="inner-logo">
-                        <a href="index">
+                        <a href="home">
                             <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     viewBox="0 0 108 30"
@@ -57,7 +57,7 @@
                         <div class="menu-right">
                             <ul>
                                 <li><a href="#"><i class="fa-solid fa-cart-shopping nav-item"></i></a></li>
-                                <li><button id="openLogin"><i class="fa-solid fa-circle-user nav-icon"></i>Đăng nhập</button></li>
+                                <li><a id="openLogin"  href="loginSystem"><i class="fa-solid fa-circle-user nav-icon"></i>Đăng nhập</a></li>
                                 <li><a href="register">Đăng kí</a></li>
                                 <li id="userLoginLi" style="display: none; position: relative;"><span id="userLogin" style="cursor:pointer;"><i class="fa-solid fa-circle-user nav-icon"></i>
                                             Xin chào, <span class="username"></span>
@@ -86,7 +86,7 @@
         <button class="close-btn" id="closeLogin">✕</button>
         <h2>Đăng nhập</h2>
         <!-- Form User -->
-        <form id="userLoginForm" method="post" action="/login">
+        <form id="userLoginForm" method="post" action="/login" class="login-form">
             <div class="form-group">
                 <label for="username">Tên tài khoản</label>
                 <input
