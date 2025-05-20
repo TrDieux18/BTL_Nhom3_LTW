@@ -321,10 +321,10 @@
 
                         <!--Nội dung: Đặt vé--> 
                         <div class="tab-content" id="bookingHistory" style="display: none">
-                          
+
 
                             <h2 class="text-center inner-desc">Danh sách đặt vé</h2>
-                              <form action="${pageContext.request.contextPath}/bookingHistory" method="get" class="row g-3 mb-4">
+                            <form action="${pageContext.request.contextPath}/bookingHistory" method="get" class="row g-3 mb-4">
                                 <input type="hidden" name="tab" value="bookingHistory" />
                                 <input type="hidden" name="action" value="search" />
 
@@ -420,7 +420,7 @@
                                 <div class="col-md-3">
                                     <input type="text" class="form-control" name="hotelName" placeholder="Tên khách sạn" value="${param.hotelName != null ? param.hotelName : ''}">
                                 </div>
-                               
+
                                 <div class="col-md-4"  style=" display: flex; gap: 15px;">
                                     <select class="form-select" name="sortBy" style="height: 38px; width: 180px; min-width: 150px; max-width: 220px; padding: 5px 10px; font-size: 1rem; border-radius: 4px; border: 1px solid #ced4da; transition: border-color 0.3s ease;">
                                         <option value="" ${param.sortBy == null || param.sortBy == '' ? 'selected' : ''}>-- Sắp xếp --</option>
