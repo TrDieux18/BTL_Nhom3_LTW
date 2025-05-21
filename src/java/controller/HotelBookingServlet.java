@@ -27,7 +27,7 @@ public class HotelBookingServlet extends HttpServlet {
                 String sortBy = request.getParameter("sortBy");
 
                 List<HotelBooking> list = dao.searchHotelBooking(userName, hotelName, sortBy);
-                request.setAttribute("tab", "hotelBooking"); // để mở đúng tab trong JSP
+                request.setAttribute("tab", "hotelBooking"); 
                 request.setAttribute("hotelBookings", list);
                 request.getRequestDispatcher("management.jsp").forward(request, response);
                 return;

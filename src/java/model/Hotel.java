@@ -16,12 +16,12 @@ import lombok.Setter;
 public class Hotel {
     private Integer id;
 
-    private String name, address, contact_info, rating, price_per_night, createdBy;
+    private String name, address, contact_info, rating, price_per_night, createdBy, image;
 
     public Hotel() {
     }
 
-    public Hotel(String name, String address, String contact_info, String rating, String price_per_night) {
+    public Hotel(String name, String address, String contact_info, String rating, String price_per_night, String image) {
         this.name = name;
         this.address = address;
         this.contact_info = contact_info;

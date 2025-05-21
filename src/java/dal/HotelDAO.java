@@ -32,6 +32,8 @@ public class HotelDAO extends DBContext {
                 hotel.setContact_info(rs.getString("contact_info"));
                 hotel.setRating(rs.getString("rating"));
                 hotel.setPrice_per_night(rs.getString("price_per_night"));
+                hotel.setImage(rs.getString("image"));
+                System.out.println("đã lấy được ảnh");
                 hotels.add(hotel);
             }
         } catch (SQLException e) {
@@ -42,7 +44,7 @@ public class HotelDAO extends DBContext {
     }
 
     public void update(Hotel hotel) {
-        String sql = "UPDATE hotel SET name = ?, address = ?, contact_info = ?, rating = ?, price_per_night = ?, createdby = ? WHERE id = ?";
+        String sql = "UPDATE hotel SET name = ?, address = ?, contact_info = ?, rating = ?, price_per_night = ?, createdby = ?, image = ? WHERE id = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, hotel.getName());
             ps.setString(2, hotel.getAddress());
@@ -55,7 +57,9 @@ public class HotelDAO extends DBContext {
             ps.setLong(5, pricePerNight);
             ps.setString(6, hotel.getCreatedBy());
 
-            ps.setInt(7, hotel.getId());
+            ps.setString(7, hotel.getImage());
+            
+            ps.setInt(8, hotel.getId());
 
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -65,7 +69,7 @@ public class HotelDAO extends DBContext {
     }
 
     public void insert(Hotel hotel) {
-        String sql = "INSERT INTO hotel (name, address, contact_info, rating, price_per_night, createdby) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO hotel (name, address, contact_info, rating, price_per_night, createdby, image) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, hotel.getName());
             ps.setString(2, hotel.getAddress());
@@ -80,7 +84,8 @@ public class HotelDAO extends DBContext {
             ps.setLong(5, pricePerNight);
 
             ps.setString(6, hotel.getCreatedBy());
-
+            ps.setString(7, hotel.getImage());
+            
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -95,25 +100,25 @@ public class HotelDAO extends DBContext {
         String sqlBooking = "DELETE FROM hotel_booking WHERE hotel_id = ?";
         String sqlHotel = "DELETE FROM hotel WHERE id = ?";
         try {
-            connection.setAutoCommit(false); // bắt đầu transaction
+            connection.setAutoCommit(false); 
 
             try (PreparedStatement psBooking = connection.prepareStatement(sqlBooking); PreparedStatement psHotel = connection.prepareStatement(sqlHotel)) {
 
-                // Xóa booking liên quan
+               
                 psBooking.setInt(1, hotelId);
                 psBooking.executeUpdate();
 
-                // Xóa hotel
+                
                 psHotel.setInt(1, hotelId);
                 psHotel.executeUpdate();
 
-                connection.commit(); // commit nếu thành công
+                connection.commit(); 
                 System.out.println("✅ Đã xóa khách sạn và booking liên quan với hotel_id = " + hotelId);
             } catch (SQLException e) {
-                connection.rollback(); // rollback nếu lỗi
+                connection.rollback(); 
                 throw e;
             } finally {
-                connection.setAutoCommit(true); // bật lại auto commit
+                connection.setAutoCommit(true); 
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -206,6 +211,8 @@ public class HotelDAO extends DBContext {
                 hotel.setPrice_per_night(rs.getString("price_per_night"));
 
                 hotel.setCreatedBy(rs.getString("createdby"));
+                 hotel.setImage(rs.getString("image"));
+                 System.out.println("Chinh sua");
             }
         } catch (SQLException e) {
             e.printStackTrace();

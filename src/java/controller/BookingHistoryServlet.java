@@ -34,7 +34,7 @@ public class BookingHistoryServlet extends HttpServlet {
                  request.getRequestDispatcher("management.jsp").forward(request, response);
                  return;
             } else {
-                // Hiển thị mặc định nếu không search
+                
                   response.sendRedirect("management");
             return;
             }

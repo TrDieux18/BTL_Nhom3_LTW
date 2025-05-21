@@ -9,10 +9,14 @@ import dal.TicketDAO;
 import java.io.IOException;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
+import java.io.File;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -23,6 +27,12 @@ import model.Ticket;
  *
  * @author pc
  */
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024,
+        maxFileSize = 5 * 1024 * 1024,
+        maxRequestSize = 10 * 1024 * 1024
+)
+
 @WebServlet(name = "HotelServlet", urlPatterns = {"/hotel"})
 public class HotelServlet extends HttpServlet {
 
@@ -40,23 +50,59 @@ public class HotelServlet extends HttpServlet {
             String rating = request.getParameter("rating");
             String pricePerNight = request.getParameter("pricePerNight");
 
-            Hotel hotel = new Hotel();
+           
+            Part imagePart = request.getPart("imageFile");
+            String imageFileName = null;
 
+            HotelDAO dao = new HotelDAO();
+            Hotel hotel;
+
+            if (idStr != null && !idStr.isEmpty()) {
+              
+                int id = Integer.parseInt(idStr);
+                hotel = dao.getHotelById(id);
+                if (hotel == null) {
+                    response.getWriter().println("Không tìm thấy khách sạn.");
+                    return;
+                }
+            } else {
+                
+                hotel = new Hotel();
+                hotel.setCreatedBy("admin");
+            }
+
+          
             hotel.setName(name);
             hotel.setAddress(address);
             hotel.setContact_info(contactInfo);
             hotel.setRating(rating);
             hotel.setPrice_per_night(pricePerNight);
-            hotel.setCreatedBy("admin");
 
-            HotelDAO dao = new HotelDAO();
+          
+            if (imagePart != null && imagePart.getSize() > 0) {
+                String realPath = getServletContext().getRealPath("/uploads");
+                File uploadDir = new File(realPath);
+                if (!uploadDir.exists()) {
+                    uploadDir.mkdirs();
+                }
 
-            if (idStr != null && !idStr.isEmpty()) {
-                // ✅ Nếu có id → cập nhật
-                hotel.setId(Integer.parseInt(idStr));
+                imageFileName = Paths.get(imagePart.getSubmittedFileName()).getFileName().toString();
+                String imagePath = realPath + File.separator + imageFileName;
+
+                imagePart.write(imagePath);
+
+                
+                hotel.setImage("assets/images/" + imageFileName);
+            } else if (hotel.getImage() == null || hotel.getImage().isEmpty()) {
+               
+                response.getWriter().println("Bạn cần thêm hình ảnh.");
+                return;
+            }
+
+           
+            if (hotel.getId() > 0) {
                 dao.update(hotel);
             } else {
-                // ✅ Nếu không có id → thêm mới
                 dao.insert(hotel);
             }
 
@@ -64,7 +110,7 @@ public class HotelServlet extends HttpServlet {
 
         } catch (Exception e) {
             e.printStackTrace();
-            response.getWriter().println("Lỗi khi thêm/cập nhật vé: " + e.getMessage());
+            response.getWriter().println("Lỗi khi thêm/cập nhật khách sạn: " + e.getMessage());
         }
     }
 
@@ -107,7 +153,7 @@ public class HotelServlet extends HttpServlet {
                 List<Hotel> result = hotelDAO.searchHotels(name, address, rating, priceStr, sortBy);
 
                 request.setAttribute("hotels", result);
-                  request.setAttribute("tab", "hotel");
+                request.setAttribute("tab", "hotel");
                 request.getRequestDispatcher("management.jsp").forward(request, response);
                 return;
             } else {
