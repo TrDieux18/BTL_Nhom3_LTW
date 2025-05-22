@@ -10,13 +10,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import model.Hotel;
 
-@WebServlet(name = "HotelSearchServlet", urlPatterns = {"/hotel"})
+@WebServlet(name = "HotelSearchServlet", urlPatterns = {"/hotelList"})
 public class HotelSearchServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-       
         String address = request.getParameter("address");
         String priceRange = request.getParameter("priceRange"); 
         String minRoomsRaw = request.getParameter("minRooms");
@@ -44,7 +43,14 @@ public class HotelSearchServlet extends HttpServlet {
             hotels = hotelDAO.searchHotels(address, priceRange, minRooms);
         }
 
-        request.setAttribute("hotels", hotels);
+        // Chia danh sách hotels thành 2 phần
+        int mid = hotels.size() / 2;
+        List<Hotel> recommendedHotels = hotels.subList(0, mid);
+        List<Hotel> discountHotels = hotels.subList(mid, hotels.size());
+
+        request.setAttribute("recommendedHotels", recommendedHotels);
+        request.setAttribute("discountHotels", discountHotels);
+
         request.getRequestDispatcher("hotel.jsp").forward(request, response);
     }
 }

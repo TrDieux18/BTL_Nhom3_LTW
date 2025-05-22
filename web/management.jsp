@@ -32,7 +32,7 @@
                     <div class="container-fluid">
                         <!-- Nội dung: Vé máy bay -->
                         <div class="tab-content" id="flight" style="display: block;">
-                            <h2 class="text-center inner-desc">Danh sách vé máy bay</h2>
+                            <h2 class="text-center inner-desc text-dark">Danh sách vé máy bay</h2>
                             <!-- FORM TÌM KIẾM -->
                             <form class="row g-3 mb-4" action="${pageContext.request.contextPath}/ticket" method="get">
                                 <input type="hidden" name="tab" value="flight" />
@@ -129,7 +129,7 @@
 
                         <!-- Nội dung: Khách sạn -->
                         <div class="tab-content" id="hotel" style="display: none">
-                            <h2 class="text-center inner-desc">Danh sách khách sạn</h2>
+                            <h2 class="text-center inner-desc text-dark">Danh sách khách sạn</h2>
                             <form class="row g-3 mb-4" action="${pageContext.request.contextPath}/hotel" method="get">
                                 <input type="hidden" name="tab" value="hotel" />
                                 <input type="hidden" name="action" value="search" />
@@ -222,7 +222,7 @@
 
                         <!-- Nội dung: Người dùng -->
                         <div class="tab-content" id="customer" style="display: none">
-                            <h2 class="text-center inner-desc">Danh sách người dùng</h2>
+                            <h2 class="text-center inner-desc text-dark">Danh sách người dùng</h2>
                             <form class="row g-3 mb-4" action="${pageContext.request.contextPath}/userServlet" method="get">
                                 <input type="hidden" name="tab" value="customer" />
                                 <input type="hidden" name="action" value="search" />
@@ -323,7 +323,7 @@
                         <div class="tab-content" id="bookingHistory" style="display: none">
 
 
-                            <h2 class="text-center inner-desc">Danh sách đặt vé</h2>
+                            <h2 class="text-center inner-desc text-dark">Lịch sử đặt vé</h2>
                             <form action="${pageContext.request.contextPath}/bookingHistory" method="get" class="row g-3 mb-4">
                                 <input type="hidden" name="tab" value="bookingHistory" />
                                 <input type="hidden" name="action" value="search" />
@@ -409,7 +409,7 @@
 
                         <!--Nội dung đặt khách sạn-->
                         <div class="tab-content" id="hotelBooking" style="display: none">
-                            <h2 class="text-center inner-desc">Danh sách đặt khách sạn</h2>
+                            <h2 class="text-center inner-desc text-dark">Lịch sử đặt khách sạn</h2>
                             <form action="${pageContext.request.contextPath}/hotelBooking" method="get" class="row g-3 mb-4" style="display: flex; gap: 15px; align-items: center; justify-content: center;">
                                 <input type="hidden" name="tab" value="hotelBooking" />
                                 <input type="hidden" name="action" value="search" />

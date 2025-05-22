@@ -17,7 +17,7 @@ public class Hotel {
 
     private Integer id, roomsAvailable;
 
-    private String name, address, contact_info, rating, createdBy, image;
+    private String name, address, contact_info, rating, createdBy, image, description;
     
     private Long price_per_night;
 

@@ -26,6 +26,7 @@ public class HotelDAO extends DBContext {
                 hotel.setRoomsAvailable(rs.getInt("rooms_available"));
                 hotel.setCreatedBy(rs.getString("createdBy"));
                 hotel.setImage(rs.getString("image"));
+                hotel.setDescription(rs.getString("description"));
                 hotels.add(hotel);
             }
         } catch (SQLException e) {
@@ -159,6 +160,7 @@ public class HotelDAO extends DBContext {
                 h.setRoomsAvailable(rs.getInt("rooms_available"));
                 h.setCreatedBy(rs.getString("createdBy"));
                 h.setImage(rs.getString("image"));
+                h.setDescription(rs.getString("description"));
                 list.add(h);
             }
         } catch (Exception e) {
@@ -185,6 +187,7 @@ public class HotelDAO extends DBContext {
                 hotel.setPrice_per_night(rs.getLong("price_per_night"));
                 hotel.setRoomsAvailable(rs.getInt("rooms_available"));
                 hotel.setCreatedBy(rs.getString("createdBy"));
+                hotel.setDescription(rs.getString("description"));
                 hotel.setImage(rs.getString("image"));
             }
         } catch (SQLException e) {
@@ -255,6 +258,7 @@ public class HotelDAO extends DBContext {
                 hotel.setRoomsAvailable(rs.getInt("rooms_available"));
                 hotel.setCreatedBy(rs.getString("createdBy"));
                 hotel.setImage(rs.getString("image"));
+                hotel.setDescription(rs.getString("description"));
                 hotels.add(hotel);
             }
         } catch (SQLException e) {
