@@ -1,0 +1,155 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="model.User" %>
+<%@ page import="java.util.List" %>
+<%@ page import="model.Ticket" %>
+<%@ page import="model.HotelBooking" %>
+<%
+
+    String type = (String) request.getAttribute("type");
+%>
+<!DOCTYPE html>
+<html lang="vi">
+    <head>
+        <title>Đơn hàng đã đặt</title>
+        <style>
+            .booked-card {
+                background-color: #fff8f8;
+                border: 1px solid #e5e5e5;
+                border-left: 5px solid #dc3545;
+                border-radius: 10px;
+                padding: 16px 20px;
+                margin-bottom: 16px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+                transition: all 0.3s ease;
+            }
+
+            .booked-card:hover {
+                box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+                transform: translateY(-2px);
+            }
+
+            .booked-info {
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+                font-size: 15px;
+                color: #333;
+            }
+
+            .booked-info i {
+                color: #dc3545;
+                margin-right: 6px;
+                min-width: 18px;
+                text-align: center;
+            }
+
+            .booked-info strong {
+                font-weight: 600;
+                color: #000;
+            }
+
+            .booked-price {
+                font-size: 16px;
+                font-weight: bold;
+                color: #28a745;
+                margin-top: 8px;
+            }
+
+            .list-group-item.active {
+                color: #ffffff !important;
+            }
+
+        </style>
+    </head>
+    <body>
+        <%@ include file="header.jsp" %>
+
+        <div class="container mt-5 mb-5">
+            <div class="row">
+                <!-- Sidebar -->
+                <div class="col-md-3">
+                    <div class="list-group">
+                        <a href="${pageContext.request.contextPath}/orders?action=get&type=all&id=<%= user.getId() %>" class="list-group-item list-group-item-action <%= (type == null || "all".equals(type)) ? "active" : "" %>" style="background-color: #da3d33">Tất cả</a>
+                        <a href="${pageContext.request.contextPath}/orders?action=get&type=flight&id=<%= user.getId() %>" class="list-group-item list-group-item-action <%= "flight".equals(type) ? "active" : "" %>">Vé máy bay</a>
+                        <a href="${pageContext.request.contextPath}/orders?action=get&type=hotel&id=<%= user.getId() %>" class="list-group-item list-group-item-action <%= "hotel".equals(type) ? "active" : "" %>">Khách sạn</a>
+                        <a href="#" class="list-group-item list-group-item-action">Khác</a>
+                        <a href="account.jsp" class="list-group-item list-group-item-action active" style="background-color: #da3d33"><i class="fa fa-user me-2"></i>Hồ sơ</a>
+                        <a href="updatepassword.jsp" class="list-group-item list-group-item-action"><i class="fa fa-key me-2"></i>Thay đổi mật khẩu</a>
+                        <a href="#" class="list-group-item list-group-item-action"><i class="fa fa-address-book me-2"></i>Danh sách liên lạc</a>
+                        <a href="#" class="list-group-item list-group-item-action"><i class="fa fa-users me-2"></i>Danh sách du khách</a>
+                    </div>
+                </div>
+
+                <!-- Main Content -->
+                <div class="col-md-9">
+
+                    <!-- Vé máy bay -->
+                    <%
+                        if (type == null || "all".equals(type) || "flight".equals(type)) {
+                            List<Ticket> tickets = (List<Ticket>) request.getAttribute("tickets");
+                    %>
+                    <form action="orders" method="post">
+                        <div class="card mb-4">
+                            <div class="card-header bg-danger text-white">Vé máy bay đã đặt</div>
+                            <div class="card-body">
+                                <%
+                                    if (tickets != null && !tickets.isEmpty()) {
+                                        for (Ticket ticket : tickets) {
+                                %>
+                                <div class="booked-card">
+                                    <div class="booked-info">
+                                        <div><i class="fa-solid fa-plane"></i><strong>Chuyến bay:</strong> <%= ticket.getAirline() %></div>
+                                        <div><i class="fa-solid fa-location-dot"></i><strong>Điểm đi:</strong> <%= ticket.getOrigin() %> - <strong>Điểm đến:</strong> <%= ticket.getDestination() %></div>
+                                        <div><i class="fa-regular fa-clock"></i><strong>Giờ khởi hành:</strong> <%= ticket.getDeparturetime() %> - <strong>Giờ đến:</strong> <%= ticket.getArrivetime() %></div>
+                                        <div><i class="fa-solid fa-chair"></i><strong>Ghế:</strong> <%= ticket.getType() %></div>
+                                        <div class="booked-price"><i class="fa-solid fa-dollar-sign"></i> <%= ticket.getPrice() %> VNĐ</div>
+                                    </div>
+                                </div>
+                                <% }
+                            } else { %>
+                                <p>Bạn chưa đặt vé máy bay nào.</p>
+                                <% } %>
+                            </div>
+                        </div>
+                    </form>
+                    <% } %>
+
+                    <!-- Khách sạn -->
+                    <%
+                        if (type == null || "all".equals(type) || "hotel".equals(type)) {
+                            List<HotelBooking> hotelBookings = (List<HotelBooking>) request.getAttribute("hotelBookings");
+                    %>
+                    <form action="orders" method="post">
+                        <div class="card">
+                            <div class="card-header bg-danger text-white">Phòng khách sạn đã đặt</div>
+                            <div class="card-body">
+                                <%
+                                    if (hotelBookings != null && !hotelBookings.isEmpty()) {
+                                        for (HotelBooking booking : hotelBookings) {
+                                %>
+                                <div class="booked-card">
+                                    <div class="booked-info">
+                                        <div><i class="fa-solid fa-hotel"></i><strong>Khách sạn:</strong> <%= booking.getHotelName() %></div>
+                                        <div><i class="fa-regular fa-calendar-check"></i><strong>Ngày nhận phòng:</strong> <%= booking.getCheckInDate() %> - <strong>Ngày trả phòng:</strong> <%= booking.getCheckOutDate() %></div>
+                                        <div><i class="fa-regular fa-calendar-days"></i><strong>Ngày đặt:</strong> <%= booking.getBookingDate() %></div>
+                                        <div><i class="fa-solid fa-bed"></i><strong>Số lượng phòng:</strong> <%= booking.getRoomQuantity() %></div>
+                                        <div><i class="fa-solid fa-note-sticky"></i><strong>Ghi chú:</strong> <%= booking.getNotes() %></div>
+                                        <div class="booked-price"><i class="fa-solid fa-dollar-sign"></i> <%= booking.getTotalPrice() %> VNĐ</div>
+                                        <div><i class="fa-solid fa-info-circle"></i><strong>Trạng thái:</strong> <%= booking.getStatus() %></div>
+                                    </div>
+                                </div>
+                                <% }
+                            } else { %>
+                                <p>Bạn chưa đặt phòng khách sạn nào.</p>
+                                <% } %>
+                            </div>
+                        </div>
+                    </form>
+                    <% } %>
+
+                </div>
+            </div>
+        </div>
+                    <%@include file="footer.jsp" %>
+    </body>
+</html>

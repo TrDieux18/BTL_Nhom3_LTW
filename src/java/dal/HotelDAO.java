@@ -1,10 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package dal;
 
-import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,10 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Hotel;
 
-/**
- *
- * @author pc
- */
 public class HotelDAO extends DBContext {
 
     public List<Hotel> getAllHotel() {
@@ -31,68 +22,55 @@ public class HotelDAO extends DBContext {
                 hotel.setAddress(rs.getString("address"));
                 hotel.setContact_info(rs.getString("contact_info"));
                 hotel.setRating(rs.getString("rating"));
-                hotel.setPrice_per_night(rs.getString("price_per_night"));
+                hotel.setPrice_per_night(rs.getLong("price_per_night"));
+                hotel.setRoomsAvailable(rs.getInt("rooms_available"));
+                hotel.setCreatedBy(rs.getString("createdBy"));
                 hotel.setImage(rs.getString("image"));
-                System.out.println("đã lấy được ảnh");
                 hotels.add(hotel);
             }
         } catch (SQLException e) {
-            System.err.println("❌ Lỗi khi truy vấn dữ liệu tickets: " + e.getMessage());
+            System.err.println("❌ Lỗi khi truy vấn dữ liệu hotel: " + e.getMessage());
         }
 
         return hotels;
     }
 
     public void update(Hotel hotel) {
-        String sql = "UPDATE hotel SET name = ?, address = ?, contact_info = ?, rating = ?, price_per_night = ?, createdby = ?, image = ? WHERE id = ?";
+        String sql = "UPDATE hotel SET name = ?, address = ?, contact_info = ?, rating = ?, price_per_night = ?, rooms_available = ?, createdBy = ?, image = ? WHERE id = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, hotel.getName());
             ps.setString(2, hotel.getAddress());
             ps.setString(3, hotel.getContact_info());
-
-            BigDecimal rating = new BigDecimal(hotel.getRating());
-            ps.setBigDecimal(4, rating);
-
-            Long pricePerNight = Long.parseLong(hotel.getPrice_per_night());
-            ps.setLong(5, pricePerNight);
-            ps.setString(6, hotel.getCreatedBy());
-
-            ps.setString(7, hotel.getImage());
-            
-            ps.setInt(8, hotel.getId());
+            ps.setString(4, hotel.getRating());
+            ps.setLong(5, hotel.getPrice_per_night());
+            ps.setInt(6, hotel.getRoomsAvailable() != null ? hotel.getRoomsAvailable() : 0);
+            ps.setString(7, hotel.getCreatedBy());
+            ps.setString(8, hotel.getImage());
+            ps.setInt(9, hotel.getId());
 
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println("❌ Lỗi khi truy vấn dữ liệu tickets: " + e.getMessage());
+            System.err.println("❌ Lỗi khi cập nhật hotel: " + e.getMessage());
         }
     }
 
     public void insert(Hotel hotel) {
-        String sql = "INSERT INTO hotel (name, address, contact_info, rating, price_per_night, createdby, image) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO hotel (name, address, contact_info, rating, price_per_night, rooms_available, createdBy, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, hotel.getName());
             ps.setString(2, hotel.getAddress());
             ps.setString(3, hotel.getContact_info());
-
             ps.setString(4, hotel.getRating());
+            ps.setLong(5, hotel.getPrice_per_night() != null ? hotel.getPrice_per_night() : 0L);
+            ps.setInt(6, hotel.getRoomsAvailable() != null ? hotel.getRoomsAvailable() : 0);
+            ps.setString(7, hotel.getCreatedBy());
+            ps.setString(8, hotel.getImage());
 
-            long pricePerNight = 0L;
-            if (hotel.getPrice_per_night() != null && !hotel.getPrice_per_night().trim().isEmpty()) {
-                pricePerNight = Long.parseLong(hotel.getPrice_per_night().trim());
-            }
-            ps.setLong(5, pricePerNight);
-
-            ps.setString(6, hotel.getCreatedBy());
-            ps.setString(7, hotel.getImage());
-            
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
             System.err.println("❌ Lỗi khi chèn dữ liệu hotel: " + e.getMessage());
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-            System.err.println("❌ Định dạng số không hợp lệ trong rating hoặc price_per_night");
         }
     }
 
@@ -100,25 +78,23 @@ public class HotelDAO extends DBContext {
         String sqlBooking = "DELETE FROM hotel_booking WHERE hotel_id = ?";
         String sqlHotel = "DELETE FROM hotel WHERE id = ?";
         try {
-            connection.setAutoCommit(false); 
+            connection.setAutoCommit(false);
 
             try (PreparedStatement psBooking = connection.prepareStatement(sqlBooking); PreparedStatement psHotel = connection.prepareStatement(sqlHotel)) {
 
-               
                 psBooking.setInt(1, hotelId);
                 psBooking.executeUpdate();
 
-                
                 psHotel.setInt(1, hotelId);
                 psHotel.executeUpdate();
 
-                connection.commit(); 
+                connection.commit();
                 System.out.println("✅ Đã xóa khách sạn và booking liên quan với hotel_id = " + hotelId);
             } catch (SQLException e) {
-                connection.rollback(); 
+                connection.rollback();
                 throw e;
             } finally {
-                connection.setAutoCommit(true); 
+                connection.setAutoCommit(true);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -158,13 +134,11 @@ public class HotelDAO extends DBContext {
             }
         }
 
-        // Sắp xếp
         if (sortBy != null && !sortBy.trim().isEmpty()) {
             if (sortBy.equals("name")) {
                 sql += " ORDER BY name ASC";
             } else if (sortBy.equals("price")) {
                 sql += " ORDER BY price_per_night DESC";
-                System.out.println("Đã chạy vào đây");
             }
         }
 
@@ -181,8 +155,10 @@ public class HotelDAO extends DBContext {
                 h.setAddress(rs.getString("address"));
                 h.setContact_info(rs.getString("contact_info"));
                 h.setRating(rs.getString("rating"));
-                h.setPrice_per_night(rs.getString("price_per_night"));
+                h.setPrice_per_night(rs.getLong("price_per_night"));
+                h.setRoomsAvailable(rs.getInt("rooms_available"));
                 h.setCreatedBy(rs.getString("createdBy"));
+                h.setImage(rs.getString("image"));
                 list.add(h);
             }
         } catch (Exception e) {
@@ -205,14 +181,11 @@ public class HotelDAO extends DBContext {
                 hotel.setName(rs.getString("name"));
                 hotel.setAddress(rs.getString("address"));
                 hotel.setContact_info(rs.getString("contact_info"));
-
                 hotel.setRating(rs.getString("rating"));
-
-                hotel.setPrice_per_night(rs.getString("price_per_night"));
-
-                hotel.setCreatedBy(rs.getString("createdby"));
-                 hotel.setImage(rs.getString("image"));
-                 System.out.println("Chinh sua");
+                hotel.setPrice_per_night(rs.getLong("price_per_night"));
+                hotel.setRoomsAvailable(rs.getInt("rooms_available"));
+                hotel.setCreatedBy(rs.getString("createdBy"));
+                hotel.setImage(rs.getString("image"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -222,4 +195,100 @@ public class HotelDAO extends DBContext {
         return hotel;
     }
 
+    public List<Hotel> searchHotels(String address, String priceRange, Integer minRooms) {
+        List<Hotel> hotels = new ArrayList<>();
+
+        if (connection == null) {
+            throw new IllegalStateException("Database connection is not initialized.");
+        }
+
+        StringBuilder sql = new StringBuilder("SELECT * FROM hotel WHERE 1=1");
+        List<Object> params = new ArrayList<>();
+
+        // Lọc theo địa chỉ (tìm gần đúng, không phân biệt hoa thường)
+        if (address != null && !address.trim().isEmpty()) {
+            sql.append(" AND LOWER(address) LIKE ?");
+            params.add("%" + address.trim().toLowerCase() + "%");
+        }
+
+        // Lọc theo mức giá theo priceRange (chuẩn hóa theo yêu cầu: 3 mức giá)
+        if (priceRange != null && !priceRange.trim().isEmpty()) {
+            switch (priceRange) {
+                case "1": // Dưới 500.000 VNĐ
+                    sql.append(" AND price_per_night < 1000000");
+                    break;
+                case "2": // Từ 500.000 đến dưới 1.500.000 VNĐ
+                    sql.append(" AND price_per_night >= 1000000 AND price_per_night < 2500000");
+                    break;
+                case "3": // Từ 1.500.000 VNĐ trở lên
+                    sql.append(" AND price_per_night >= 2500000");
+                    break;
+                default:
+                    // Nếu giá trị khác, không lọc giá
+                    break;
+            }
+        }
+
+        // Lọc theo số phòng còn trống tối thiểu
+        if (minRooms != null) {
+            sql.append(" AND rooms_available >= ?");
+            params.add(minRooms);
+        }
+
+        // Sắp xếp theo giá tăng dần
+        sql.append(" ORDER BY price_per_night ASC");
+
+        try (PreparedStatement ps = connection.prepareStatement(sql.toString())) {
+            for (int i = 0; i < params.size(); i++) {
+                ps.setObject(i + 1, params.get(i));
+            }
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Hotel hotel = new Hotel();
+                hotel.setId(rs.getInt("id"));
+                hotel.setName(rs.getString("name"));
+                hotel.setAddress(rs.getString("address"));
+                hotel.setContact_info(rs.getString("contact_info"));
+                hotel.setRating(rs.getString("rating"));
+                hotel.setPrice_per_night(rs.getLong("price_per_night"));
+                hotel.setRoomsAvailable(rs.getInt("rooms_available"));
+                hotel.setCreatedBy(rs.getString("createdBy"));
+                hotel.setImage(rs.getString("image"));
+                hotels.add(hotel);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error during hotel search: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return hotels;
+    }
+
+    public void insertBooking(int userId, int hotelId, String hotelName, String checkIn, String checkOut,
+            String bookingDate, int roomQuantity, String note, Long totalPrice, String status) {
+
+        String sql = "INSERT INTO hotel_booking (user_id, hotel_id, checkin_date, checkout_date, "
+                + "booking_date, room_quantity, notes, total_price, status) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            ps.setInt(2, hotelId);
+
+            ps.setDate(3, java.sql.Date.valueOf(checkIn));
+            ps.setDate(4, java.sql.Date.valueOf(checkOut));
+            ps.setTimestamp(5, java.sql.Timestamp.valueOf(bookingDate));
+            ps.setInt(6, roomQuantity);
+            ps.setString(7, note != null ? note : "");
+            ps.setLong(8, totalPrice != null ? totalPrice : 0L);
+            ps.setString(9, status);
+
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Lỗi khi thêm đặt phòng vào cơ sở dữ liệu: " + e.getMessage());
+        }
+    }
 }

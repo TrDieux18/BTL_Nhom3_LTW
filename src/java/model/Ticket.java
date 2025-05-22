@@ -17,7 +17,6 @@ public class Ticket {
     private String type;
     private String price;
     private String estimatedtime;
-
     private LocalDateTime modifiedDate;
     private String createdBy;
 

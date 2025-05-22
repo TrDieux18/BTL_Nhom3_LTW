@@ -24,6 +24,7 @@
                 border-radius: 14px;
                 box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
                 padding: 32px 48px;
+                margin-bottom: 20px;
             }
             h2 {
                 font-weight: 700;
@@ -264,6 +265,12 @@
                         <% } %>
                     </div>
                 </div>
+                    
+                     <div class="form-group">
+                    <label for="roomsAvailable">Phòng trống</label>
+                    <input type="text" id="roomsAvailable" name="roomsAvailable" placeholder="Nhập phòng" required
+                           value="<%= (hotel != null) ? hotel.getRoomsAvailable() : "" %>" />
+                </div>
 
                 <button type="submit"><%= (hotel == null) ? "Thêm khách sạn" : "Lưu sửa" %></button>
             </form>
@@ -289,5 +296,6 @@
                 });
             }
         </script>
+        <%@include file="footer.jsp" %>
     </body>
 </html>

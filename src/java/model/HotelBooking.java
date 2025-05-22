@@ -11,30 +11,30 @@ import lombok.Setter;
  *
  * @author pc
  */
-@Getter 
+@Getter
 @Setter
 public class HotelBooking {
-    
+
     private Integer id;
-    
+
     private Integer userId;
-    
+
     private String userName;
-    
+
     private Integer hotelId;
-    
+
     private String hotelName;
-    
+
     private String checkInDate, checkOutDate;
-    
+
     private Integer roomQuantity;
-    
+
     private Long totalPrice;
-    
+
     private String status;
-    
+
     private String bookingDate;
-    
+
     private String notes;
-    
+
 }

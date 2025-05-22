@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBContext {
+
     protected Connection connection;
 
     public DBContext() {
@@ -13,7 +14,7 @@ public class DBContext {
             String username = "root";
             String password = "trandieu2210";
 
-            Class.forName("com.mysql.cj.jdbc.Driver"); // Đã được xử lý
+            Class.forName("com.mysql.cj.jdbc.Driver"); 
             connection = DriverManager.getConnection(url, username, password);
             System.out.println("✅ Kết nối thành công đến MySQL!");
         } catch (ClassNotFoundException e) {

@@ -9,6 +9,11 @@
 <%@page import="model.User" %>
 <%@ page import="model.Ticket" %>
 <%@ page import="java.util.List" %>
+<%@page import="model.HotelBooking"%>
+
+<% User user = (User) session.getAttribute("user");
+  
+%>
 <link rel="stylesheet" href="./assets/css/bootstrap.min.css" />
 
 <link rel="stylesheet" href="./assets/css/reset.min.css" />
@@ -48,7 +53,7 @@
                             <div class="menu-left">
                                 <ul>
                                     <li><a href="#">Vé máy bay</a></li>
-                                    <li><a href="#">Khách sạn</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/hotel">Khách sạn</a></li>
                                     <li><a href="#">Khuyến mãi</a></li>
                                     <li><a href="#">Đơn hàng</a></li>
                                     <li><a href="#">Ưu đãi</a></li>
@@ -56,54 +61,54 @@
                             </div>
                             <span style="margin-right: 150px"></span>
                             <div class="menu-right">
-                                 <ul>
-                                        <li><a href="#"><i class="fa-solid fa-cart-shopping nav-item"></i></a></li>
-                                                <%
-                                                    User user = (User) session.getAttribute("user");
-                                                    if (user != null) {
-                                               if(user.getRoleId() == 2){
-                                                %>
-                                        <li style="position: relative;">
-                                            <span id="userFullname" style="cursor:pointer;">
-                                                <i class="fa-solid fa-circle-user nav-icon"></i>
-                                                Xin chào, <span id="userFullname"><%= user.getFullname() %></span>
-                                            </span>
-                                            <div id="userDropdown" class="user-dropdown" style="display:none;">
-                                                <ul>
-                                                    <li><a href="#"><i class="fa-solid fa-list"></i> Danh sách đơn hàng</a></li>
-                                                    <li><a href="#"><i class="fa-solid fa-user"></i> Hồ sơ</a></li>
-                                                    <li><a href="#"><i class="fa-solid fa-key"></i> Thay đổi mật khẩu</a></li>
-                                                    <li class="logout"><a href="logout" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a></li>
-                                                </ul>
-                                            </div>
-                                        </li>
-                                        <% }
-        else if(user.getRoleId() == 1){
-                                        %>
-                                        <li style="position: relative;">
-                                            <span id="userFullname" style="cursor:pointer;">
-                                                <i class="fa-solid fa-circle-user nav-icon"></i>
-                                                Xin chào, <span id="userFullname"><%= user.getFullname() %></span>
-                                            </span>
-                                            <div id="userDropdown" class="user-dropdown" style="display:none;">
-                                                <ul>
-                                                    <li><a href="${pageContext.request.contextPath}/management"><i class="fa-solid fa-list"></i> Quản lí thông tin</a></li>
-                                                    <li><a href="#"><i class="fa-solid fa-user"></i> Hồ sơ</a></li>
-                                                    <li><a href="#"><i class="fa-solid fa-key"></i> Thay đổi mật khẩu</a></li>
-                                                    <li class="logout"><a href="logout" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a></li>
-                                                </ul>
-                                            </div>
-                                        </li>
-                                        <% } %>
-                                        <%
-                                        } else {
-                                        %>
-                                        <li><a id="openLogin" href="login.jsp"><i class="fa-solid fa-circle-user nav-icon"></i>Đăng nhập</></li>
-                                        <li><a href="register.jsp">Đăng ký</a></li>
+                                <ul>
+                                    <li><a href="#"><i class="fa-solid fa-cart-shopping nav-item"></i></a></li>
                                             <%
-                                                }
+                                                
+                                                if (user != null) {
+                                           if(user.getRoleId() == 2){
                                             %>
-                                    </ul>
+                                    <li style="position: relative;">
+                                        <span id="userFullname" style="cursor:pointer;">
+                                            <i class="fa-solid fa-circle-user nav-icon"></i>
+                                            Xin chào, <span id="userFullname"><%= user.getFullname() %></span>
+                                        </span>
+                                        <div id="userDropdown" class="user-dropdown" style="display:none;">
+                                            <ul>
+                                                <li><a href="${pageContext.request.contextPath}/orders?action=get&type=all&id=<%= user.getId() %>"><i class="fa-solid fa-list"></i> Danh sách đơn hàng</a></li>
+                                                <li><a href="account.jsp"><i class="fa-solid fa-user"></i> Hồ sơ</a></li>
+                                                <li><a href="updatepassword.jsp"><i class="fa-solid fa-key"></i> Thay đổi mật khẩu</a></li>
+                                                <li class="logout"><a href="logout" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a></li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                    <% }
+    else if(user.getRoleId() == 1){
+                                    %>
+                                    <li style="position: relative;">
+                                        <span id="userFullname" style="cursor:pointer;">
+                                            <i class="fa-solid fa-circle-user nav-icon"></i>
+                                            Xin chào, <span id="userFullname"><%= user.getFullname() %></span>
+                                        </span>
+                                        <div id="userDropdown" class="user-dropdown" style="display:none;">
+                                            <ul>
+                                                <li><a href="${pageContext.request.contextPath}/management"><i class="fa-solid fa-list"></i> Quản lí thông tin</a></li>
+                                                <li><a href="account.jsp"><i class="fa-solid fa-user"></i> Hồ sơ</a></li>
+                                                <li><a href="updatepassword.jsp"><i class="fa-solid fa-key"></i> Thay đổi mật khẩu</a></li>
+                                                <li class="logout"><a href="logout" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a></li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                    <% } %>
+                                    <%
+                                    } else {
+                                    %>
+                                    <li><a id="openLogin" href="login.jsp"><i class="fa-solid fa-circle-user nav-icon"></i>Đăng nhập</></li>
+                                    <li><a href="register.jsp">Đăng ký</a></li>
+                                        <%
+                                            }
+                                        %>
+                                </ul>
                             </div>
                         </div>
                     </div>

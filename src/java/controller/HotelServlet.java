@@ -5,7 +5,7 @@
 package controller;
 
 import dal.HotelDAO;
-import dal.TicketDAO;
+
 import java.io.IOException;
 
 import jakarta.servlet.ServletException;
@@ -17,11 +17,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import java.io.File;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+
 import java.util.List;
 import model.Hotel;
-import model.Ticket;
+
 
 /**
  *
@@ -49,8 +48,8 @@ public class HotelServlet extends HttpServlet {
             String contactInfo = request.getParameter("contactInfo");
             String rating = request.getParameter("rating");
             String pricePerNight = request.getParameter("pricePerNight");
+            String roomsAvailable = request.getParameter("roomsAvailable");
 
-           
             Part imagePart = request.getPart("imageFile");
             String imageFileName = null;
 
@@ -58,7 +57,7 @@ public class HotelServlet extends HttpServlet {
             Hotel hotel;
 
             if (idStr != null && !idStr.isEmpty()) {
-              
+
                 int id = Integer.parseInt(idStr);
                 hotel = dao.getHotelById(id);
                 if (hotel == null) {
@@ -66,19 +65,19 @@ public class HotelServlet extends HttpServlet {
                     return;
                 }
             } else {
-                
+
                 hotel = new Hotel();
                 hotel.setCreatedBy("admin");
             }
 
-          
             hotel.setName(name);
             hotel.setAddress(address);
             hotel.setContact_info(contactInfo);
             hotel.setRating(rating);
-            hotel.setPrice_per_night(pricePerNight);
+            hotel.setPrice_per_night(Long.parseLong(pricePerNight));
+            hotel.setRoomsAvailable(Integer.parseInt(roomsAvailable));
+            
 
-          
             if (imagePart != null && imagePart.getSize() > 0) {
                 String realPath = getServletContext().getRealPath("/uploads");
                 File uploadDir = new File(realPath);
@@ -91,16 +90,14 @@ public class HotelServlet extends HttpServlet {
 
                 imagePart.write(imagePath);
 
-                
                 hotel.setImage("assets/images/" + imageFileName);
             } else if (hotel.getImage() == null || hotel.getImage().isEmpty()) {
-               
+
                 response.getWriter().println("Bạn cần thêm hình ảnh.");
                 return;
             }
 
-           
-            if (hotel.getId() > 0) {
+            if (hotel.getId() != null) {
                 dao.update(hotel);
             } else {
                 dao.insert(hotel);

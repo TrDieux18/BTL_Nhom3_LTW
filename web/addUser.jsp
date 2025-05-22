@@ -29,6 +29,7 @@
                 border-radius: 14px;
                 box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
                 padding: 32px 48px;
+                 margin-bottom: 20px;
             }
             h2 {
                 font-weight: 700;
@@ -185,5 +186,6 @@
                 <button type="submit"><%= (currentUser == null) ? "Thêm Người Dùng" : "Lưu" %></button>
             </form>
         </div>
+            <%@include file="footer.jsp" %>
     </body>
 </html>

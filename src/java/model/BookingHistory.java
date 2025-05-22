@@ -14,26 +14,26 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BookingHistory {
-    
+
     private Integer id;
-    
+
     private Integer userId;
-    
+
     private String userName;
-    
+
     private Integer ticketId;
-    
+
     private String origin, destination, typeTicket;
-    
+
     private String payment, orderStatus;
-    
+
     private Integer quantity;
 
     public BookingHistory() {
     }
 
-    public BookingHistory( Integer userId, String userName, Integer ticketId, String origin, String destination, String typeTicket, String payment, String orderStatus, Integer quantity) {
-  
+    public BookingHistory(Integer userId, String userName, Integer ticketId, String origin, String destination, String typeTicket, String payment, String orderStatus, Integer quantity) {
+
         this.userId = userId;
         this.userName = userName;
         this.ticketId = ticketId;
@@ -44,12 +44,5 @@ public class BookingHistory {
         this.orderStatus = orderStatus;
         this.quantity = quantity;
     }
-    
-    
 
-
-   
-    
-    
-    
 }

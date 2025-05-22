@@ -14,15 +14,16 @@ import lombok.Setter;
 @Getter
 @Setter
 public class User {
+
     private Integer id;
-    private String fullname,username,email,phonenumber,password,address,status;
+    private String fullname, username, email, phonenumber, password, address, status;
     private int roleId;
 
     public User() {
     }
 
     public User(String fullname, String username, String email, String phonenumber, String password, String address, String status, int roleId) {
-          
+
         this.fullname = fullname;
         this.username = username;
         this.email = email;
@@ -32,6 +33,5 @@ public class User {
         this.status = status;
         this.roleId = roleId;
     }
-
 
 }

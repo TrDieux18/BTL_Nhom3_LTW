@@ -8,38 +8,52 @@ import java.util.List;
 public class UserDAO extends DBContext {
 
     public boolean registerUser(User user) {
+        System.out.println("✅ Đã vào UserDAO.registerUser");
+
         if (connection == null) {
             System.err.println("❌ Không thể kết nối đến database trong hàm registerUser()");
             return false;
         }
 
-        try {
-            String checkQuery = "SELECT COUNT(*) FROM users WHERE username = ? OR email = ? OR phonenumber = ?";
-            PreparedStatement checkStmt = connection.prepareStatement(checkQuery);
+        String checkQuery = "SELECT COUNT(*) FROM users WHERE username = ? OR email = ? OR phonenumber = ?";
+        String insertUser = "INSERT INTO users (fullname, username, email, phonenumber, password, address, status, role_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (
+                PreparedStatement checkStmt = connection.prepareStatement(checkQuery)) {
             checkStmt.setString(1, user.getUsername());
             checkStmt.setString(2, user.getEmail());
             checkStmt.setString(3, user.getPhonenumber());
 
-            ResultSet rs = checkStmt.executeQuery();
-            if (rs.next() && rs.getInt(1) > 0) {
-                return false;
+            try (ResultSet rs = checkStmt.executeQuery()) {
+                if (rs.next() && rs.getInt(1) > 0) {
+                    System.out.println("⚠️ Người dùng đã tồn tại.");
+                    return false;
+                }
             }
+        } catch (SQLException e) {
+            System.err.println("❌ Lỗi khi kiểm tra người dùng trùng:");
+            e.printStackTrace();
+            return false;
+        }
 
-            String insertUser = "INSERT INTO users (fullname, username, email, phonenumber, password, address, status, role_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-            PreparedStatement insertStmt = connection.prepareStatement(insertUser);
+        try (
+                PreparedStatement insertStmt = connection.prepareStatement(insertUser)) {
             insertStmt.setString(1, user.getFullname());
             insertStmt.setString(2, user.getUsername());
             insertStmt.setString(3, user.getEmail());
             insertStmt.setString(4, user.getPhonenumber());
             insertStmt.setString(5, user.getPassword());
             insertStmt.setString(6, user.getAddress());
-            insertStmt.setInt(7, Integer.parseInt(user.getStatus()));
+            insertStmt.setInt(7, Integer.parseInt(user.getStatus())); // hoặc user.getStatusInt()
             insertStmt.setInt(8, user.getRoleId());
 
-            return insertStmt.executeUpdate() > 0;
+            int rowsInserted = insertStmt.executeUpdate();
+            System.out.println("✅ Số dòng đã thêm: " + rowsInserted);
+            return rowsInserted > 0;
 
         } catch (SQLException e) {
-            System.err.println("❌ Lỗi khi đăng ký người dùng: " + e.getMessage());
+            System.err.println("❌ Lỗi khi chèn người dùng:");
+            e.printStackTrace();
             return false;
         }
     }
@@ -108,7 +122,34 @@ public class UserDAO extends DBContext {
         return users;
     }
 
-    // ✅ THÊM MỚI NGƯỜI DÙNG (dùng cho UserServlet)
+    public boolean updatePassword(String username, String newPassword) {
+        String sql = "UPDATE users SET password = ? WHERE username = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, newPassword);
+            ps.setString(2, username);
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean updateUser(User user) {
+        String sql = "UPDATE users SET fullname = ?, email = ?, phonenumber = ?, address = ? WHERE username = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, user.getFullname());
+            ps.setString(2, user.getEmail());
+            ps.setString(3, user.getPhonenumber());
+            ps.setString(4, user.getAddress());
+            ps.setString(5, user.getUsername());
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public void insert(User user) {
         String sql = "INSERT INTO users (fullname, username, email, phonenumber, address, status, role_id, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -149,77 +190,76 @@ public class UserDAO extends DBContext {
     }
 
     public void delete(int userId) {
-         String sql = "UPDATE users SET status = ? WHERE id = ?";
+        String sql = "UPDATE users SET status = ? WHERE id = ?";
 
-    try (PreparedStatement ps = connection.prepareStatement(sql)) {
-        ps.setInt(1, 0);
-        ps.setInt(2, userId);
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, 0);
+            ps.setInt(2, userId);
 
-        ps.executeUpdate();
-    } catch (SQLException e) {
-        System.err.println("❌ Lỗi khi cập nhật người dùng: " + e.getMessage());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("❌ Lỗi khi cập nhật người dùng: " + e.getMessage());
+        }
     }
-    }
-    
+
     public List<User> searchUsers(String fullname, String username, String address, Integer roleId, String sortBy) throws SQLException {
-    List<User> users = new ArrayList<>();
-    StringBuilder sql = new StringBuilder("SELECT * FROM users WHERE 1=1 ");
+        List<User> users = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT * FROM users WHERE 1=1 ");
 
-    if (fullname != null && !fullname.trim().isEmpty()) {
-        sql.append("AND LOWER(fullname) LIKE ? ");
-    }
-    if (username != null && !username.trim().isEmpty()) {
-        sql.append("AND LOWER(username) LIKE ? ");
-    }
-    if (address != null && !address.trim().isEmpty()) {
-        sql.append("AND LOWER(address) LIKE ? ");
-    }
-    if (roleId != null && roleId > 0) {
-        sql.append("AND role_id = ? ");
-    }
-
-    if ("fullname".equalsIgnoreCase(sortBy)) {
-        sql.append("ORDER BY fullname ASC ");
-    } else if ("phonenumber".equalsIgnoreCase(sortBy)) {
-        sql.append("ORDER BY phonenumber ASC ");
-    }
-
-    try (
-         PreparedStatement ps = connection.prepareStatement(sql.toString())) {
-
-        int paramIndex = 1;
         if (fullname != null && !fullname.trim().isEmpty()) {
-            ps.setString(paramIndex++, "%" + fullname.trim().toLowerCase() + "%");
+            sql.append("AND LOWER(fullname) LIKE ? ");
         }
         if (username != null && !username.trim().isEmpty()) {
-            ps.setString(paramIndex++, "%" + username.trim().toLowerCase() + "%");
+            sql.append("AND LOWER(username) LIKE ? ");
         }
         if (address != null && !address.trim().isEmpty()) {
-            ps.setString(paramIndex++, "%" + address.trim().toLowerCase() + "%");
+            sql.append("AND LOWER(address) LIKE ? ");
         }
         if (roleId != null && roleId > 0) {
-            ps.setInt(paramIndex++, roleId);
+            sql.append("AND role_id = ? ");
         }
 
-        try (ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                User user = new User();
-                user.setId(rs.getInt("id"));
-                user.setFullname(rs.getString("fullname"));
-                user.setUsername(rs.getString("username"));
-                user.setEmail(rs.getString("email"));
-                user.setPhonenumber(rs.getString("phonenumber"));
-                user.setAddress(rs.getString("address"));
-                user.setStatus(rs.getString("status"));
-                user.setRoleId(rs.getInt("role_id"));
-                // Gán thêm các trường khác nếu có
-                users.add(user);
+        if ("fullname".equalsIgnoreCase(sortBy)) {
+            sql.append("ORDER BY fullname ASC ");
+        } else if ("phonenumber".equalsIgnoreCase(sortBy)) {
+            sql.append("ORDER BY phonenumber ASC ");
+        }
+
+        try (
+                PreparedStatement ps = connection.prepareStatement(sql.toString())) {
+
+            int paramIndex = 1;
+            if (fullname != null && !fullname.trim().isEmpty()) {
+                ps.setString(paramIndex++, "%" + fullname.trim().toLowerCase() + "%");
+            }
+            if (username != null && !username.trim().isEmpty()) {
+                ps.setString(paramIndex++, "%" + username.trim().toLowerCase() + "%");
+            }
+            if (address != null && !address.trim().isEmpty()) {
+                ps.setString(paramIndex++, "%" + address.trim().toLowerCase() + "%");
+            }
+            if (roleId != null && roleId > 0) {
+                ps.setInt(paramIndex++, roleId);
+            }
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    User user = new User();
+                    user.setId(rs.getInt("id"));
+                    user.setFullname(rs.getString("fullname"));
+                    user.setUsername(rs.getString("username"));
+                    user.setEmail(rs.getString("email"));
+                    user.setPhonenumber(rs.getString("phonenumber"));
+                    user.setAddress(rs.getString("address"));
+                    user.setStatus(rs.getString("status"));
+                    user.setRoleId(rs.getInt("role_id"));
+
+                    users.add(user);
+                }
             }
         }
+        return users;
     }
-    return users;
-}
-
 
     public User getUserById(int id) {
         String sql = "SELECT * FROM users WHERE id = ?";

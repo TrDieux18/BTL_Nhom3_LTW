@@ -29,17 +29,15 @@ public class BookingHistoryServlet extends HttpServlet {
                 String sortBy = request.getParameter("sortBy");
 
                 List<BookingHistory> list = dao.searchBookingHistories(userName, typeTicket, origin, destination, sortBy);
-                 request.setAttribute("tab", "bookingHistory");
+                request.setAttribute("tab", "bookingHistory");
                 request.setAttribute("bookingHistorys", list);
-                 request.getRequestDispatcher("management.jsp").forward(request, response);
-                 return;
+                request.getRequestDispatcher("management.jsp").forward(request, response);
+                return;
             } else {
-                
-                  response.sendRedirect("management");
-            return;
-            }
 
-           
+                response.sendRedirect("management");
+                return;
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
