@@ -22,10 +22,6 @@ import java.util.List;
 import model.Hotel;
 
 
-/**
- *
- * @author pc
- */
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024,
         maxFileSize = 5 * 1024 * 1024,

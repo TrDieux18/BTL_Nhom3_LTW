@@ -11,7 +11,7 @@ public class HotelDAO extends DBContext {
 
     public List<Hotel> getAllHotel() {
         List<Hotel> hotels = new ArrayList<>();
-        String sql = "SELECT * FROM hotel";
+        String sql = "SELECT * FROM hotel ORDER BY price_per_night DESC";
 
         try (PreparedStatement ps = connection.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
 
@@ -238,7 +238,7 @@ public class HotelDAO extends DBContext {
             params.add(minRooms);
         }
 
-        // Sắp xếp theo giá tăng dần
+       
         sql.append(" ORDER BY price_per_night ASC");
 
         try (PreparedStatement ps = connection.prepareStatement(sql.toString())) {

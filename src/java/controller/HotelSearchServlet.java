@@ -43,7 +43,7 @@ public class HotelSearchServlet extends HttpServlet {
             hotels = hotelDAO.searchHotels(address, priceRange, minRooms);
         }
 
-        // Chia danh sách hotels thành 2 phần
+       
         int mid = hotels.size() / 2;
         List<Hotel> recommendedHotels = hotels.subList(0, mid);
         List<Hotel> discountHotels = hotels.subList(mid, hotels.size());

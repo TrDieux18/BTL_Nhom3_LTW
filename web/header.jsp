@@ -69,9 +69,9 @@
                                            if(user.getRoleId() == 2){
                                             %>
                                     <li style="position: relative;">
-                                        <span id="userFullname" style="cursor:pointer;">
+                                        <span id="userFullname" style="cursor:pointer;"  style="color: black;">
                                             <i class="fa-solid fa-circle-user nav-icon"></i>
-                                            Xin chào, <span id="userFullname"><%= user.getFullname() %></span>
+                                            Xin chào, <span id="userFullname" ><%= user.getFullname() %></span>
                                         </span>
                                         <div id="userDropdown" class="user-dropdown" style="display:none;">
                                             <ul>
@@ -86,9 +86,9 @@
     else if(user.getRoleId() == 1){
                                     %>
                                     <li style="position: relative;">
-                                        <span id="userFullname" style="cursor:pointer;">
+                                        <span id="userFullname" style="cursor:pointer;" style="color:black;">
                                             <i class="fa-solid fa-circle-user nav-icon"></i>
-                                            Xin chào, <span id="userFullname"><%= user.getFullname() %></span>
+                                            Xin chào, <span id="userFullname" ><%= user.getFullname() %></span>
                                         </span>
                                         <div id="userDropdown" class="user-dropdown" style="display:none;">
                                             <ul>
