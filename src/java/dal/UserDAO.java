@@ -7,54 +7,58 @@ import java.util.List;
 
 public class UserDAO extends DBContext {
 
-    public boolean registerUser(User user) {
-        System.out.println("✅ Đã vào UserDAO.registerUser");
-
-        if (connection == null) {
-            System.err.println("❌ Không thể kết nối đến database trong hàm registerUser()");
-            return false;
-        }
-
-        String checkQuery = "SELECT COUNT(*) FROM users WHERE username = ? OR email = ? OR phonenumber = ?";
-        String insertUser = "INSERT INTO users (fullname, username, email, phonenumber, password, address, status, role_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-
-        try (
-                PreparedStatement checkStmt = connection.prepareStatement(checkQuery)) {
-            checkStmt.setString(1, user.getUsername());
-            checkStmt.setString(2, user.getEmail());
-            checkStmt.setString(3, user.getPhonenumber());
-
-            try (ResultSet rs = checkStmt.executeQuery()) {
-                if (rs.next() && rs.getInt(1) > 0) {
-                    System.out.println("⚠️ Người dùng đã tồn tại.");
-                    return false;
-                }
+    public String registerUser(User user) {
+        try {
+            // Kiểm tra trùng username
+            String checkUsernameQuery = "SELECT COUNT(*) FROM users WHERE username = ?";
+            PreparedStatement checkUsernameStmt = connection.prepareStatement(checkUsernameQuery);
+            checkUsernameStmt.setString(1, user.getUsername());
+            ResultSet rsUsername = checkUsernameStmt.executeQuery();
+            if (rsUsername.next() && rsUsername.getInt(1) > 0) {
+                return "Tên tài khoản đã tồn tại.";
             }
-        } catch (SQLException e) {
-            System.err.println("❌ Lỗi khi kiểm tra người dùng trùng:");
-            e.printStackTrace();
-            return false;
-        }
 
-        try (
-                PreparedStatement insertStmt = connection.prepareStatement(insertUser)) {
+            // Kiểm tra trùng email
+            String checkEmailQuery = "SELECT COUNT(*) FROM users WHERE email = ?";
+            PreparedStatement checkEmailStmt = connection.prepareStatement(checkEmailQuery);
+            checkEmailStmt.setString(1, user.getEmail());
+            ResultSet rsEmail = checkEmailStmt.executeQuery();
+            if (rsEmail.next() && rsEmail.getInt(1) > 0) {
+                return "Email đã tồn tại.";
+            }
+
+            // Kiểm tra trùng phonenumber
+            String checkPhoneQuery = "SELECT COUNT(*) FROM users WHERE phonenumber = ?";
+            PreparedStatement checkPhoneStmt = connection.prepareStatement(checkPhoneQuery);
+            checkPhoneStmt.setString(1, user.getPhonenumber());
+            ResultSet rsPhone = checkPhoneStmt.executeQuery();
+            if (rsPhone.next() && rsPhone.getInt(1) > 0) {
+                return "Số điện thoại đã tồn tại.";
+            }
+            System.out.println("da nhay vao DAO");
+            // Nếu không có thông tin trùng, tiến hành đăng ký người dùng mới
+            String insertUser = 
+                "INSERT INTO [dbo].[users] " +
+                "([fullname], [username], [email], [phonenumber], [password], [address], [status], [role_id]) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            
+            // Chuẩn bị câu lệnh chèn dữ liệu vào bảng users
+            PreparedStatement insertStmt = connection.prepareStatement(insertUser);
             insertStmt.setString(1, user.getFullname());
             insertStmt.setString(2, user.getUsername());
             insertStmt.setString(3, user.getEmail());
             insertStmt.setString(4, user.getPhonenumber());
             insertStmt.setString(5, user.getPassword());
             insertStmt.setString(6, user.getAddress());
-            insertStmt.setInt(7, Integer.parseInt(user.getStatus())); // hoặc user.getStatusInt()
+            insertStmt.setString(7, user.getStatus());
             insertStmt.setInt(8, user.getRoleId());
 
-            int rowsInserted = insertStmt.executeUpdate();
-            System.out.println("✅ Số dòng đã thêm: " + rowsInserted);
-            return rowsInserted > 0;
+            // Thực thi câu lệnh chèn
+            int rowsAffected = insertStmt.executeUpdate();
+            return rowsAffected > 0 ? null : "Lỗi khi lưu dữ liệu vào database.";
 
         } catch (SQLException e) {
-            System.err.println("❌ Lỗi khi chèn người dùng:");
-            e.printStackTrace();
-            return false;
+            return "Lỗi kết nối database.";
         }
     }
 
@@ -284,5 +288,34 @@ public class UserDAO extends DBContext {
         }
         return null;
     }
+    public boolean isEmailUsedByAnotherUser(String email, int currentUserId) {
+        String query = "SELECT COUNT(*) FROM users WHERE email = ? AND id != ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, email);
+            stmt.setInt(2, currentUserId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
+    public boolean isPhoneUsedByAnotherUser(String phone, int currentUserId) {
+        String query = "SELECT COUNT(*) FROM users WHERE phonenumber = ? AND id != ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, phone);
+            stmt.setInt(2, currentUserId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
 }

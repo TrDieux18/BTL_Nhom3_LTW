@@ -22,6 +22,15 @@ import model.User;
 @WebServlet(name = "UpdateAccountServlet", urlPatterns = {"/updateaccount"})
 public class UpdateAccountServlet extends HttpServlet {
 
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -39,10 +48,32 @@ public class UpdateAccountServlet extends HttpServlet {
         }
     }
 
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
 
@@ -50,36 +81,54 @@ public class UpdateAccountServlet extends HttpServlet {
         String email = request.getParameter("email");
         String phone = request.getParameter("phonenumber");
         String address = request.getParameter("address");
-
+        
         HttpSession session = request.getSession();
         User currentUser = (User) session.getAttribute("user");
 
         if (currentUser != null) {
+            UserDAO userDAO = new UserDAO();
+
+            if (!email.equals(currentUser.getEmail()) && userDAO.isEmailUsedByAnotherUser(email, currentUser.getId())) {
+                request.setAttribute("errorMessage", "Email đã được sử dụng. Vui lòng thử lại với email khác.");
+                request.getRequestDispatcher("updateaccount.jsp").forward(request, response);
+                return;
+            }
+
+            if (!phone.equals(currentUser.getPhonenumber()) && userDAO.isPhoneUsedByAnotherUser(phone, currentUser.getId())) {
+                request.setAttribute("errorMessage", "Số điện thoại đã được sử dụng. Vui lòng thử lại với số khác.");
+                request.getRequestDispatcher("updateaccount.jsp").forward(request, response);
+                return;
+            }
 
             currentUser.setFullname(fullname);
             currentUser.setEmail(email);
             currentUser.setPhonenumber(phone);
             currentUser.setAddress(address);
 
-            // Cập nhật thông tin vào DB (nếu có)
-            UserDAO userDAO = new UserDAO();
             boolean success = userDAO.updateUser(currentUser);
 
             if (success) {
                 session.setAttribute("user", currentUser);
-                response.sendRedirect("account.jsp");
+                request.setAttribute("successMessage", "Cập nhật hồ sơ thành công! Sẽ trở về sau <span id='countdown'>3</span> giây");
+                request.getRequestDispatcher("updateaccount.jsp").forward(request, response);
             } else {
                 response.getWriter().write("Cập nhật thất bại. Vui lòng thử lại sau.");
             }
         } else {
             response.sendRedirect("login.jsp");
         }
-
+    
+      
     }
 
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
     @Override
     public String getServletInfo() {
         return "Short description";
-    }
+    }// </editor-fold>
 
 }

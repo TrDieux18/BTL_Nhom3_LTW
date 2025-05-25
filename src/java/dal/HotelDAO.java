@@ -239,7 +239,7 @@ public class HotelDAO extends DBContext {
         }
 
        
-        sql.append(" ORDER BY price_per_night ASC");
+        sql.append(" ORDER BY price_per_night DESC");
 
         try (PreparedStatement ps = connection.prepareStatement(sql.toString())) {
             for (int i = 0; i < params.size(); i++) {
