@@ -12,6 +12,21 @@
     }
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+
+    // Lấy thông báo từ session hoặc request
+    String message = null;
+    String alertType = null;
+
+    if (session.getAttribute("message") != null) {
+        message = (String) session.getAttribute("message");
+        alertType = (String) session.getAttribute("alertType");
+        // Xóa thông báo khỏi session để không hiển thị lại sau khi reload trang khác
+        session.removeAttribute("message");
+        session.removeAttribute("alertType");
+    } else if (request.getAttribute("message") != null) {
+        message = (String) request.getAttribute("message");
+        alertType = (String) request.getAttribute("alertType");
+    }
 %>
 
 <!DOCTYPE html>
@@ -19,7 +34,8 @@
     <head>
         <title><%= (ticket == null) ? "Thêm Vé Máy Bay" : "Sửa Vé Máy Bay" %></title>
 
-        <style> body {
+        <style>
+            body {
                 background: linear-gradient(135deg, #e0eafc, #cfdef3);
                 padding: 40px;
                 color: #333;
@@ -31,7 +47,7 @@
                 border-radius: 14px;
                 box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
                 padding: 32px 48px;
-                 margin-bottom: 20px;
+                margin-bottom: 20px;
             }
             h2 {
                 font-weight: 700;
@@ -117,13 +133,62 @@
             }
             .back-button:hover {
                 text-decoration: underline;
-            } </style>
+            }
+            /* Alert styles */
+            .alert {
+                padding: 15px 20px;
+                border-radius: 8px;
+                margin-bottom: 30px;
+                font-weight: 600;
+                font-size: 1rem;
+                text-align: center;
+                animation: fadeOut 1s ease forwards;
+                animation-delay: 3.5s;
+            }
+            .alert-success {
+                background-color: #d4edda;
+                color: #155724;
+                border: 1px solid #c3e6cb;
+            }
+            .alert-error {
+                background-color: #f8d7da;
+                color: #721c24;
+                border: 1px solid #f5c6cb;
+            }
+            @keyframes fadeOut {
+                to {
+                    opacity: 0;
+                    height: 0;
+                    padding: 0 20px;
+                    margin: 0;
+                    overflow: hidden;
+                }
+            }
+        </style>
+        <script>
+            window.onload = function () {
+                var alertBox = document.getElementById('alertBox');
+                if (alertBox) {
+                    setTimeout(function () {
+                        alertBox.style.display = 'none';
+                    }, 4500);
+                }
+            };
+        </script>
+
     </head>
     <body>
         <%@ include file="header.jsp" %>
 
         <div class="form-container">
+
             <a href="management" class="btn btn-info back-button">← Quay lại</a>
+
+            <% if (message != null && alertType != null) { %>
+            <div id="alertBox" class="alert <%= "success".equalsIgnoreCase(alertType) ? "alert-success" : "alert-error" %>">
+                <%= message %>
+            </div>
+            <% } %>
 
             <h2><%= (ticket == null) ? "Thêm Vé Máy Bay" : "Sửa Vé Máy Bay" %></h2>
 
@@ -185,6 +250,7 @@
                 <button type="submit"><%= (ticket == null) ? "Thêm vé" : "Lưu sửa" %></button>
             </form>
         </div>
-            <%@include file="footer.jsp" %>
+
+        <%@ include file="footer.jsp" %>
     </body>
 </html>

@@ -18,10 +18,13 @@ public class BookingHistoryDAO extends DBContext {
 
     public List<BookingHistory> getAllBooking() {
         List<BookingHistory> bookingHistorys = new ArrayList<>();
-        String sql = "SELECT bh.*, u.fullname, t.origin, t.destination, t.type "
+        String sql = "SELECT bh.*, u.fullname, t.origin, t.destination, t.type, SUM(bh.quantity * t.price) AS total_price "
                 + "FROM booking_history bh "
                 + "JOIN users u ON bh.user_id = u.id "
-                + "JOIN ticket t ON bh.ticket_id = t.id where u.status = 1; ";
+                + "JOIN ticket t ON bh.ticket_id = t.id "
+                + "WHERE u.status = 1 "
+                + "GROUP BY bh.id, u.fullname, t.origin, t.destination, t.type";
+
         try (PreparedStatement ps = connection.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
@@ -37,6 +40,9 @@ public class BookingHistoryDAO extends DBContext {
                 bk.setPayment(rs.getString("payment"));
                 bk.setOrderStatus(rs.getString("orderstatus"));
                 bk.setQuantity(rs.getInt("quantity"));
+                long totalPriceLong = rs.getLong("total_price");
+                double totalPrice = (double) totalPriceLong;
+                bk.setTotalPrice(totalPrice);
 
                 bookingHistorys.add(bk);
 
@@ -52,7 +58,7 @@ public class BookingHistoryDAO extends DBContext {
         List<BookingHistory> bookingHistorys = new ArrayList<>();
 
         StringBuilder sql = new StringBuilder(
-                "SELECT bh.*, u.fullname, t.origin, t.destination, t.type "
+                "SELECT bh.*, u.fullname, t.origin, t.destination, t.type, SUM(bh.quantity * t.price) AS total_price "
                 + "FROM booking_history bh "
                 + "JOIN users u ON bh.user_id = u.id "
                 + "JOIN ticket t ON bh.ticket_id = t.id "
@@ -87,6 +93,7 @@ public class BookingHistoryDAO extends DBContext {
         } else if ("userName".equals(sortBy)) {
             sql.append("ORDER BY u.fullname ASC ");
         }
+        sql.append("GROUP BY bh.id, u.fullname, t.origin, t.destination, t.type ");
 
         try (PreparedStatement ps = connection.prepareStatement(sql.toString())) {
             for (int i = 0; i < params.size(); i++) {
@@ -106,6 +113,9 @@ public class BookingHistoryDAO extends DBContext {
                     bk.setPayment(rs.getString("payment"));
                     bk.setOrderStatus(rs.getString("orderstatus"));
                     bk.setQuantity(rs.getInt("quantity"));
+                    long totalPriceLong = rs.getLong("total_price");
+                    double totalPrice = (double) totalPriceLong;
+                    bk.setTotalPrice(totalPrice);
                     bookingHistorys.add(bk);
                 }
             }
@@ -143,4 +153,41 @@ public class BookingHistoryDAO extends DBContext {
         }
         return tickets;
     }
+
+    public List<Object[]> statisticByUser() throws SQLException {
+        List<Object[]> list = new ArrayList<>();
+        String sql = "SELECT u.fullname, t.type, t.price "
+                + "FROM booking_history bh "
+                + "JOIN users u ON bh.user_id = u.id "
+                + "JOIN ticket t ON bh.ticket_id = t.id "
+                + "WHERE u.status = 1";
+        try (PreparedStatement ps = connection.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                String fullname = rs.getString("fullname");
+                String type = rs.getString("type");
+                double price = rs.getDouble("price");
+                list.add(new Object[]{fullname, type, price});
+            }
+        }
+        return list;
+    }
+
+    public List<Object[]> statisticByTicketType() throws SQLException {
+        List<Object[]> list = new ArrayList<>();
+        String sql = "SELECT t.type, SUM(bh.quantity) AS total_quantity, SUM(bh.quantity * t.price) AS total_price "
+                + "FROM booking_history bh "
+                + "JOIN ticket t ON bh.ticket_id = t.id "
+                + "GROUP BY t.type";
+        try (PreparedStatement ps = connection.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                String type = rs.getString("type");
+                int totalQuantity = rs.getInt("total_quantity");
+                long totalPriceLong = rs.getLong("total_price");
+                double totalPrice = (double) totalPriceLong;
+                list.add(new Object[]{type, totalQuantity, totalPrice});
+            }
+        }
+        return list;
+    }
+
 }

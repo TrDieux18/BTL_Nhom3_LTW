@@ -9,6 +9,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 import model.Ticket;
 import dal.TicketDAO;
 
@@ -20,6 +22,7 @@ public class TicketServlet extends HttpServlet {
             throws ServletException, IOException {
 
         request.setCharacterEncoding("UTF-8");
+        HttpSession session = request.getSession();
 
         try {
             String idStr = request.getParameter("id");
@@ -51,19 +54,25 @@ public class TicketServlet extends HttpServlet {
             TicketDAO dao = new TicketDAO();
 
             if (idStr != null && !idStr.isEmpty()) {
-                // ✅ Nếu có id → cập nhật
                 ticket.setId(Integer.parseInt(idStr));
                 dao.update(ticket);
+                session.setAttribute("message", "Cập nhật vé thành công!");
+                session.setAttribute("alertType", "success");
+                  request.getRequestDispatcher("addTicket.jsp").forward(request, response);
             } else {
-                // ✅ Nếu không có id → thêm mới
                 dao.insert(ticket);
+                session.setAttribute("message", "Thêm vé mới thành công!");
+                session.setAttribute("alertType", "success");
+                request.getRequestDispatcher("addTicket.jsp").forward(request, response);
             }
 
             response.sendRedirect("management");
 
         } catch (Exception e) {
             e.printStackTrace();
-            response.getWriter().println("Lỗi khi thêm/cập nhật vé: " + e.getMessage());
+            request.setAttribute("message", "Lỗi khi thêm/cập nhật vé: " + e.getMessage());
+            request.setAttribute("alertType", "error");
+            request.getRequestDispatcher("addTicket.jsp").forward(request, response);
         }
     }
 
@@ -100,17 +109,15 @@ public class TicketServlet extends HttpServlet {
                 String origin = request.getParameter("origin");
                 String destination = request.getParameter("destination");
                 String priceStr = request.getParameter("price");
-                String sortBy = request.getParameter("sortBy"); 
-
-              
+                String sortBy = request.getParameter("sortBy");
 
                 TicketDAO dao = new TicketDAO();
-                var result = dao.searchTickets(airline, origin, destination,priceStr, sortBy);
-       
+                var result = dao.searchTickets(airline, origin, destination, priceStr, sortBy);
+
                 request.setAttribute("tickets", result);
-                  request.setAttribute("tab", "ticket");
+                request.setAttribute("tab", "ticket");
                 request.getRequestDispatcher("management.jsp").forward(request, response);
-            
+
                 return;
             } else {
                 response.sendRedirect("management");

@@ -12,7 +12,6 @@ import model.BookingHistory;
 
 @WebServlet(name = "BookingHistoryServlet", urlPatterns = {"/bookingHistory"})
 public class BookingHistoryServlet extends HttpServlet {
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -33,8 +32,24 @@ public class BookingHistoryServlet extends HttpServlet {
                 request.setAttribute("bookingHistorys", list);
                 request.getRequestDispatcher("management.jsp").forward(request, response);
                 return;
-            } else {
 
+            } else if ("statByUser".equals(action)) {
+                // Thống kê theo người đặt: trả về List<Object[]> gồm [userName, typeTicket, price]
+                List<Object[]> statistics = dao.statisticByUser();
+                request.setAttribute("statistics", statistics);
+                request.setAttribute("tab", "bookingHistory");
+                request.getRequestDispatcher("management.jsp").forward(request, response);
+                return;
+
+            } else if ("statByTicketType".equals(action)) {
+                // Thống kê theo loại vé: trả về List<Object[]> gồm [typeTicket, totalQuantity, totalPrice]
+                List<Object[]> statistics = dao.statisticByTicketType();
+                request.setAttribute("statistics", statistics);
+                request.setAttribute("tab", "bookingHistory");
+                request.getRequestDispatcher("management.jsp").forward(request, response);
+                return;
+
+            } else {
                 response.sendRedirect("management");
                 return;
             }

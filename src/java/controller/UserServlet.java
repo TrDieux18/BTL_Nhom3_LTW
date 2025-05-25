@@ -52,15 +52,19 @@ public class UserServlet extends HttpServlet {
             if (idStr != null && !idStr.isEmpty()) {
                 user.setId(Integer.parseInt(idStr));
                 dao.update(user);
+                request.setAttribute("message", "Cập nhật người dùng thành công.");
+                request.setAttribute("getUser", user); // Gửi lại thông tin đã cập nhật
             } else {
                 dao.insert(user);
+                request.setAttribute("message", "Thêm người dùng thành công.");
             }
 
-            response.sendRedirect("management");
+            request.getRequestDispatcher("addUser.jsp").forward(request, response);
 
         } catch (Exception e) {
             e.printStackTrace();
-            response.getWriter().println("Lỗi khi thêm/cập nhật người dùng: " + e.getMessage());
+            request.setAttribute("error", "Lỗi khi thêm/cập nhật người dùng: " + e.getMessage());
+            request.getRequestDispatcher("addUser.jsp").forward(request, response);
         }
     }
 
@@ -77,7 +81,7 @@ public class UserServlet extends HttpServlet {
             if ("edit".equals(action)) {
                 if (id != null && !id.isEmpty()) {
                     int userId = Integer.parseInt(id);
-                    User getUser = userDAO.getUserById(userId); // Hàm này bạn cần viết thêm
+                    User getUser = userDAO.getUserById(userId);
                     if (getUser != null) {
                         request.setAttribute("getUser", getUser);
                         request.getRequestDispatcher("addUser.jsp").forward(request, response);
@@ -93,12 +97,11 @@ public class UserServlet extends HttpServlet {
             } else if ("delete".equals(action)) {
                 if (id != null && !id.isEmpty()) {
                     int userId = Integer.parseInt(id);
-                    userDAO.delete(userId); // Hàm này bạn cũng cần viết thêm
+                    userDAO.delete(userId);
                 }
                 response.sendRedirect("management");
                 return;
             } else if ("search".equals(action)) {
-                // Đọc params tìm kiếm
                 String fullname = request.getParameter("fullname");
                 String username = request.getParameter("username");
                 String address = request.getParameter("address");
@@ -114,12 +117,9 @@ public class UserServlet extends HttpServlet {
                     }
                 }
 
-                // Gọi hàm tìm kiếm trong DAO, bạn cần tự viết hàm này phù hợp
                 List<User> users = userDAO.searchUsers(fullname, username, address, roleId, sortBy);
 
                 request.setAttribute("users", users);
-
-                // Set tab để UI biết hiển thị tab customer
                 request.setAttribute("tab", "customer");
 
                 request.getRequestDispatcher("management.jsp").forward(request, response);
@@ -133,5 +133,4 @@ public class UserServlet extends HttpServlet {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Lỗi khi xử lý yêu cầu: " + e.getMessage());
         }
     }
-
 }

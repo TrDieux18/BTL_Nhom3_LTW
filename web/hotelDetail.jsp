@@ -65,7 +65,7 @@
                                             <p><strong>Số phòng:</strong> ${hotel.roomsAvailable}</p>
                                             <p><strong>Xếp hạng:</strong> 
                                                 <c:choose>
-                                                    <c:when test="${not empty hotel.rating}">${hotel.rating}</c:when>
+                                                    <c:when test="${not empty hotel.rating}">${hotel.rating}★</c:when>
                                                     <c:otherwise>Chưa có xếp hạng</c:otherwise>
                                                 </c:choose>
                                             </p>
@@ -120,7 +120,7 @@
                                         <div class="mb-3 total-price-container">
                                             <div class="price-display">
                                                 <label class="form-label fw-bold">Tổng giá:</label>
-                                                <div id="totalPrice" class="fs-5 text-danger">0 VNĐ</div>
+                                                <div id="totalPrice" class="fs-5 text-danger">0 VNĐ/Đêm</div>
                                             </div>
                                         </div>
                                         <button type="submit" class="btn btn-danger w-100 fw-bold">Đặt Phòng</button>

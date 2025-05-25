@@ -321,9 +321,8 @@
 
                         <!--Nội dung: Đặt vé--> 
                         <div class="tab-content" id="bookingHistory" style="display: none">
-
-
                             <h2 class="text-center inner-desc text-dark">Lịch sử đặt vé</h2>
+
                             <form action="${pageContext.request.contextPath}/bookingHistory" method="get" class="row g-3 mb-4">
                                 <input type="hidden" name="tab" value="bookingHistory" />
                                 <input type="hidden" name="action" value="search" />
@@ -340,8 +339,9 @@
                                 <div class="col-md-3">
                                     <input type="text" class="form-control" name="destination" placeholder="Điểm đến" value="${param.destination != null ? param.destination : ''}">
                                 </div>
-                                <div class="col-md-4"  style="margin-top: 10px; display: flex; gap: 15px; align-items: center;">
-                                    <select class="form-select" name="sortBy" style="height: 38px; width: 180px; min-width: 150px; max-width: 220px; padding: 5px 10px; font-size: 1rem; border-radius: 4px; border: 1px solid #ced4da; transition: border-color 0.3s ease;">
+
+                                <div class="col-md-4" style="margin-top: 10px; display: flex; gap: 15px; align-items: center;">
+                                    <select class="form-select" name="sortBy" style="width: 180px;">
                                         <option value="" ${param.sortBy == null || param.sortBy == '' ? 'selected' : ''}>-- Sắp xếp --</option>
                                         <option value="quantity" ${param.sortBy == 'quantity' ? 'selected' : ''}>Số lượng vé</option>
                                         <option value="userName" ${param.sortBy == 'userName' ? 'selected' : ''}>Tên người đặt</option>
@@ -350,6 +350,27 @@
                                     <a href="${pageContext.request.contextPath}/bookingHistory" class="btn btn-secondary">🔄 Reset</a>
                                 </div>
                             </form>
+
+                            <div class="mb-3 d-flex gap-2">
+                                <form action="${pageContext.request.contextPath}/bookingHistory" method="get" style="margin-right: 20px;">
+                                    <input type="hidden" name="action" value="statByUser">
+                                    <input type="hidden" name="tab" value="bookingHistory" />
+                                    <button type="submit" class="btn btn-primary">📊 Thống kê theo người đặt</button>
+                                </form>
+                                <form action="${pageContext.request.contextPath}/bookingHistory" method="get">
+                                    <input type="hidden" name="tab" value="bookingHistory" />
+                                    <input type="hidden" name="action" value="statByTicketType">
+                                    <button type="submit" class="btn btn-warning">📈 Thống kê theo loại vé</button>
+                                </form>
+                            </div>
+
+                            <%
+                                String action = request.getParameter("action");
+                                List<BookingHistory> bhs = (List<BookingHistory>) request.getAttribute("bookingHistorys");
+                                List<Object[]> stats = (List<Object[]>) request.getAttribute("statistics");
+                            %>
+
+                            <% if (action == null || "search".equals(action)) { %>
                             <div class="inner-table">
                                 <table class="table table-bordered">
                                     <thead>
@@ -363,49 +384,89 @@
                                             <th scope="col">Trạng thái</th>
                                             <th scope="col">Số lượng</th>
                                             <th scope="col">Tổng tiền</th>
+
                                         </tr>
                                     </thead>
                                     <tbody id="bookingHistoryList">
                                         <%
-                                            List<BookingHistory> bhs = (List<BookingHistory>) request.getAttribute("bookingHistorys");
                                             int bhsIndex = 1;
-                                            if (bhs != null) {
+                                            if (bhs != null && !bhs.isEmpty()) {
                                                 for (BookingHistory bh : bhs) {
                                         %>
                                         <tr>
                                             <th scope="row"><%= bhsIndex++ %></th>
-
                                             <td><%= bh.getUserName() %></td>
                                             <td><%= bh.getOrigin() %></td>
                                             <td><%= bh.getDestination() %></td>
                                             <td><%= bh.getTypeTicket() %></td>
-
                                             <td><%= bh.getPayment() %></td>
                                             <td><%= bh.getOrderStatus() %></td>
                                             <td><%= bh.getQuantity() %></td>
+                                            <td><%= bh.getTotalPrice() %></td>
 
-                                            <td>
-                                                <button
-                                                    class="delete-btn btn btn-danger"
-                                                    onclick="openDeleteModal()"
-                                                    >
-                                                    🗑
-                                                </button>
+<!--                                            <td>
+                                                <button class="delete-btn btn btn-danger" onclick="openDeleteModal()">🗑</button>
                                                 <button class="btn btn-info">✏</button>
-                                            </td>
+                                            </td>-->
                                         </tr>
-                                        <%
-                                                }
+                                        <%      }
                                             } else {
                                         %>
                                         <tr><td colspan="10">Không có lịch sử nào.</td></tr>
-                                        <%
-                                            }
-                                        %>
+                                        <% } %>
                                     </tbody>
                                 </table>
                             </div>
+                            <% } else if ("statByUser".equals(action) && stats != null) { %>
+                            <h3 class="mt-4">📊 Thống kê theo người đặt</h3>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>Tên người đặt</th>
+                                        <th>Loại vé</th>
+                                        <th>Giá vé</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% int i = 1;
+               for (Object[] row : stats) { %>
+                                    <tr>
+                                        <td><%= i++ %></td>
+                                        <td><%= row[0] %></td>  <%-- Tên người đặt --%>
+                                        <td><%= row[1] %></td>  <%-- Loại vé --%>
+                                        <td><%= row[2] %></td>  <%-- Giá vé --%>
+                                    </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                            <% } else if ("statByTicketType".equals(action) && stats != null) { %>
+                            <h3 class="mt-4">📈 Thống kê theo loại vé</h3>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>Loại vé</th>
+                                        <th>Tổng số vé</th>
+                                        <th>Tổng số tiền</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% int i = 1;
+               for (Object[] row : stats) { %>
+                                    <tr>
+                                        <td><%= i++ %></td>
+                                        <td><%= row[0] %></td>   <%-- Loại vé --%>
+                                        <td><%= row[1] %></td>   <%-- Tổng số vé --%>
+                                        <td><%= row[2] %></td>   <%-- Tổng số tiền --%>
+                                    </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                            <% } %>
                         </div>
+
+
 
                         <!--Nội dung đặt khách sạn-->
                         <div class="tab-content" id="hotelBooking" style="display: none">
@@ -446,7 +507,7 @@
                                             <th scope="col">Trạng thái</th>
                                             <th scope="col">Ghi chú</th>
 
-                                            <th scope="col">Thao tác</th>
+                                            <!--<th scope="col">Thao tác</th>-->
                                         </tr>
                                     </thead>
                                     <tbody id="hotelBookingList">
@@ -470,7 +531,7 @@
                                             <td><%= hb.getStatus() %></td>
                                             <td><%= hb.getNotes() %></td>
 
-                                            <td>
+<!--                                            <td>
                                                 <button
                                                     class="delete-btn btn btn-danger"
                                                     onclick="openDeleteModal()"
@@ -478,7 +539,7 @@
                                                     🗑
                                                 </button>
                                                 <button class="btn btn-info">✏</button>
-                                            </td>
+                                            </td>-->
                                         </tr>
                                         <%
                                                 }

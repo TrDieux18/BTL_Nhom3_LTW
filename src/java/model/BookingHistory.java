@@ -28,6 +28,8 @@ public class BookingHistory {
     private String payment, orderStatus;
 
     private Integer quantity;
+    
+    private double totalPrice;
 
     public BookingHistory() {
     }
