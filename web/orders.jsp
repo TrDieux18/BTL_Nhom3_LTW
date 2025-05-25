@@ -11,55 +11,6 @@
 <html lang="vi">
     <head>
         <title>Đơn hàng đã đặt</title>
-        <style>
-            .booked-card {
-                background-color: #fff8f8;
-                border: 1px solid #e5e5e5;
-                border-left: 5px solid #dc3545;
-                border-radius: 10px;
-                padding: 16px 20px;
-                margin-bottom: 16px;
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-                transition: all 0.3s ease;
-            }
-
-            .booked-card:hover {
-                box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
-                transform: translateY(-2px);
-            }
-
-            .booked-info {
-                display: flex;
-                flex-direction: column;
-                gap: 6px;
-                font-size: 15px;
-                color: #333;
-            }
-
-            .booked-info i {
-                color: #dc3545;
-                margin-right: 6px;
-                min-width: 18px;
-                text-align: center;
-            }
-
-            .booked-info strong {
-                font-weight: 600;
-                color: #000;
-            }
-
-            .booked-price {
-                font-size: 16px;
-                font-weight: bold;
-                color: #28a745;
-                margin-top: 8px;
-            }
-
-            .list-group-item.active {
-                color: #ffffff !important;
-            }
-
-        </style>
     </head>
     <body>
         <%@ include file="header.jsp" %>
@@ -100,7 +51,7 @@
                                         <div><i class="fa-solid fa-location-dot"></i><strong>Điểm đi:</strong> <%= ticket.getOrigin() %> - <strong>Điểm đến:</strong> <%= ticket.getDestination() %></div>
                                         <div><i class="fa-regular fa-clock"></i><strong>Giờ khởi hành:</strong> <%= ticket.getDeparturetime() %> - <strong>Giờ đến:</strong> <%= ticket.getArrivetime() %></div>
                                         <div><i class="fa-solid fa-chair"></i><strong>Ghế:</strong> <%= ticket.getType() %></div>
-                                        <div class="booked-price"><i class="fa-solid fa-dollar-sign"></i> <%= ticket.getPrice() %> VNĐ</div>
+                                        <div class="booked-price"><i class="fa-solid fa-dollar-sign"></i><%= ticket.getPrice() %> VNĐ</div>
                                     </div>
                                 </div>
                                 <% }

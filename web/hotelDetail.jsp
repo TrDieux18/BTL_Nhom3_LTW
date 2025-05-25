@@ -20,14 +20,6 @@
         <link rel="stylesheet" href="./assets/css/styles.css" />
         <link rel="stylesheet" href="./assets/font/fontawesome-free-6.7.2-web/fontawesome/css/all.min.css"/>
         <title>Chi tiết khách sạn</title>
-
-        <style>
-            textarea.form-control {
-
-                resize: none;
-            }
-
-        </style>
     </head>
     <body>
         <jsp:include page="header.jsp" />
@@ -105,7 +97,7 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label for="status" class="form-label">Trạng thái:</label>
-                                                    <select id="status" name="status" class="form-select form-select-custom" style="width: 100%; padding: 0.45rem; border-radius: 0.375rem; border: 1px solid #ced4da;">
+                                                    <select id="status" name="status" class="form-select form-select-custom" style="width: 100%; padding: 0.43rem; border-radius: 0.35rem; margin-top: 4px; border: 1px solid #ced4da;">
                                                         <option value="Pending">Pending</option>
                                                         <option value="Confirmed">Confirmed</option>
                                                         <option value="Cancelled">Cancelled</option>
@@ -114,7 +106,7 @@
                                             </div>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="note" class="form-label">Ghi chú:</label>
+                                            <label for="note" class="form-label" style="resize: none;">Ghi chú:</label>
                                             <textarea id="note" name="note" rows="3" class="form-control" placeholder="Nhập ghi chú nếu có..."></textarea>
                                         </div>
                                         <div class="mb-3 total-price-container">

@@ -136,7 +136,7 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
         );
 
         request.getSession().setAttribute("successMessage", "Chúc mừng bạn đã đặt khách sạn " + hotel.getName() + " thành công.");
-        response.sendRedirect("hotel.jsp");
+        response.sendRedirect("hotelList");
 
     } catch (NumberFormatException e) {
         request.setAttribute("error", "Dữ liệu không hợp lệ: " + e.getMessage());

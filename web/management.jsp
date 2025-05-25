@@ -59,15 +59,13 @@
                                         <option value="price">Giá vé</option>
                                     </select>
 
-                                    <button type="submit" class="btn btn-success">🔍 Tìm kiếm</button>
-                                    <a href="${pageContext.request.contextPath}/ticket" class="btn btn-secondary">🔄 Reset</a>
+                                    <button type="submit" class="btn btn-success"><i class="fa-solid fa-magnifying-glass"></i> Tìm kiếm</button>
+                                    <a href="${pageContext.request.contextPath}/ticket" class="btn btn-secondary"><i class="fa-solid fa-rotate"></i> Reset</a>
                                 </div>
 
                             </form>
 
-                            <a  class="btn btn-primary" style="display: flex; align-items: center; gap: 5px;" href="addTicket.jsp"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-patch-plus-fill" viewBox="0 0 16 16">
-                                <path d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01zM8.5 6v1.5H10a.5.5 0 0 1 0 1H8.5V10a.5.5 0 0 1-1 0V8.5H6a.5.5 0 0 1 0-1h1.5V6a.5.5 0 0 1 1 0"/>
-                                </svg>Thêm vé máy bay</a>
+                            <a  class="btn btn-primary" style="display: flex; align-items: center; gap: 5px;" href="addTicket.jsp"><i class="fa-solid fa-plus"></i>Thêm vé máy bay</a>
 
 
                             <div class="inner-table">
@@ -107,10 +105,10 @@
                                                 <a
                                                     class="delete-btn btn btn-danger"
                                                     href="${pageContext.request.contextPath}/ticket?action=delete&id=<%= t.getId() %>">
-                                                    🗑
+                                                    <i class="fa-solid fa-trash"></i>
                                                 </a>
 
-                                                <a href="${pageContext.request.contextPath}/ticket?action=edit&id=<%= t.getId() %>" class="btn btn-info">✏</a>
+                                                <a href="${pageContext.request.contextPath}/ticket?action=edit&id=<%= t.getId() %>" class="btn btn-info"><i class="fa-solid fa-pen-to-square"></i></a>
 
                                             </td>
                                         </tr>
@@ -157,15 +155,13 @@
                                         <option value="price" ${param.sortBy == 'price' ? "selected" : ""}>Giá mỗi đêm</option>
                                     </select>
 
-                                    <button type="submit" class="btn btn-success">🔍 Tìm kiếm</button>
-                                    <a href="${pageContext.request.contextPath}/hotel" class="btn btn-secondary">🔄 Reset</a>
+                                    <button type="submit" class="btn btn-success"><i class="fa-solid fa-magnifying-glass"></i> Tìm kiếm</button>
+                                    <a href="${pageContext.request.contextPath}/hotel" class="btn btn-secondary"><i class="fa-solid fa-rotate"></i> Reset</a>
                                 </div>
                             </form>
 
                             <a class="btn btn-primary" style="display: flex; align-items: center; gap: 5px;" href="addHotel.jsp">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-patch-plus-fill" viewBox="0 0 16 16">
-                                <path d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01zM8.5 6v1.5H10a.5.5 0 0 1 0 1H8.5V10a.5.5 0 0 1-1 0V8.5H6a.5.5 0 0 1 0-1h1.5V6a.5.5 0 0 1 1 0"/>
-                                </svg>Thêm khách sạn
+                                <i class="fa-solid fa-plus"></i>Thêm khách sạn
                             </a>
 
                             <div class="inner-table">
@@ -200,9 +196,9 @@
                                                     class="delete-btn btn btn-danger"
                                                     href="${pageContext.request.contextPath}/hotel?action=delete&id=<%= h.getId() %>"
                                                     >
-                                                    🗑
+                                                    <i class="fa-solid fa-trash"></i>
                                                 </a>
-                                                <a href="${pageContext.request.contextPath}/hotel?action=edit&id=<%= h.getId() %>" class="btn btn-info">✏</a>
+                                                <a href="${pageContext.request.contextPath}/hotel?action=edit&id=<%= h.getId() %>" class="btn btn-info"><i class="fa-solid fa-pen-to-square"></i></a>
                                             </td>
                                         </tr>
                                         <%
@@ -255,14 +251,12 @@
                                         <option value="fullname" <%= "fullname".equals(request.getParameter("sortBy")) ? "selected" : "" %>>Tên</option>
                                         <option value="phonenumber" <%= "phonenumber".equals(request.getParameter("sortBy")) ? "selected" : "" %>>Số điện thoại</option>
                                     </select>
-                                    <button type="submit" class="btn btn-success">🔍 Tìm kiếm</button>
-                                    <a href="${pageContext.request.contextPath}/userServlet?tab=customer" class="btn btn-secondary">🔄 Reset</a>
+                                    <button type="submit" class="btn btn-success"><i class="fa-solid fa-magnifying-glass"></i> Tìm kiếm</button>
+                                    <a href="${pageContext.request.contextPath}/userServlet?tab=customer" class="btn btn-secondary"><i class="fa-solid fa-rotate"></i> Reset</a>
                                 </div>
                             </form>
 
-                            <a  class="btn btn-primary" style="display: flex; align-items: center; gap: 5px;" href="addUser.jsp"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-patch-plus-fill" viewBox="0 0 16 16">
-                                <path d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01zM8.5 6v1.5H10a.5.5 0 0 1 0 1H8.5V10a.5.5 0 0 1-1 0V8.5H6a.5.5 0 0 1 0-1h1.5V6a.5.5 0 0 1 1 0"/>
-                                </svg>Thêm người dùng</a>
+                            <a  class="btn btn-primary" style="display: flex; align-items: center; gap: 5px;" href="addUser.jsp"><i class="fa-solid fa-plus"></i>Thêm người dùng</a>
                             <div class="inner-table">
                                 <table class="table table-bordered">
                                     <thead>
@@ -297,9 +291,9 @@
                                                 <a
                                                     class="delete-btn btn btn-danger"
                                                     href="<%= request.getContextPath() %>/userServlet?action=delete&id=<%= u.getId() %>">
-                                                    🗑
+                                                    <i class="fa-solid fa-trash"></i>
                                                 </a>
-                                                <a href="<%= request.getContextPath() %>/userServlet?action=edit&id=<%= u.getId() %>" class="btn btn-info">✏</a>
+                                                <a href="<%= request.getContextPath() %>/userServlet?action=edit&id=<%= u.getId() %>" class="btn btn-info"><i class="fa-solid fa-pen-to-square"></i></a>
                                                 <% } else { %>
                                                 Không có quyền
                                                 <% } %>
@@ -341,13 +335,13 @@
                                 </div>
 
                                 <div class="col-md-4" style="margin-top: 10px; display: flex; gap: 15px; align-items: center;">
-                                    <select class="form-select" name="sortBy" style="width: 180px;">
+                                    <select class="form-select" name="sortBy" style="height: 38px; width: 180px; min-width: 150px; max-width: 220px; padding: 5px 10px; font-size: 1rem; border-radius: 4px; border: 1px solid #ced4da; transition: border-color 0.3s ease;">
                                         <option value="" ${param.sortBy == null || param.sortBy == '' ? 'selected' : ''}>-- Sắp xếp --</option>
                                         <option value="quantity" ${param.sortBy == 'quantity' ? 'selected' : ''}>Số lượng vé</option>
                                         <option value="userName" ${param.sortBy == 'userName' ? 'selected' : ''}>Tên người đặt</option>
                                     </select>
-                                    <button type="submit" class="btn btn-success">🔍 Tìm kiếm</button>
-                                    <a href="${pageContext.request.contextPath}/bookingHistory" class="btn btn-secondary">🔄 Reset</a>
+                                    <button type="submit" class="btn btn-success"><i class="fa-solid fa-magnifying-glass"></i> Tìm kiếm</button>
+                                    <a href="${pageContext.request.contextPath}/bookingHistory" class="btn btn-secondary"><i class="fa-solid fa-rotate"></i> Reset</a>
                                 </div>
                             </form>
 
@@ -355,12 +349,12 @@
                                 <form action="${pageContext.request.contextPath}/bookingHistory" method="get" style="margin-right: 20px;">
                                     <input type="hidden" name="action" value="statByUser">
                                     <input type="hidden" name="tab" value="bookingHistory" />
-                                    <button type="submit" class="btn btn-primary">📊 Thống kê theo người đặt</button>
+                                    <button type="submit" class="btn btn-primary" style="font-weight: 500"><i class="fa-solid fa-chart-simple"></i> Thống kê theo người đặt</button>
                                 </form>
                                 <form action="${pageContext.request.contextPath}/bookingHistory" method="get">
                                     <input type="hidden" name="tab" value="bookingHistory" />
                                     <input type="hidden" name="action" value="statByTicketType">
-                                    <button type="submit" class="btn btn-warning">📈 Thống kê theo loại vé</button>
+                                    <button type="submit" class="btn btn-warning" style="font-weight: 500;color: #fdfdfd;"><i class="fa-solid fa-chart-line"></i> Thống kê theo loại vé</button>
                                 </form>
                             </div>
 
@@ -488,8 +482,8 @@
                                         <option value="roomQuantity" ${param.sortBy == 'roomQuantity' ? 'selected' : ''}>Số lượng phòng</option>
                                         <option value="totalPrice" ${param.sortBy == 'totalPrice' ? 'selected' : ''}>Tổng tiền</option>
                                     </select>
-                                    <button type="submit" class="btn btn-success">🔍 Tìm kiếm</button>
-                                    <a href="${pageContext.request.contextPath}/hotelBooking" class="btn btn-secondary">🔄 Reset</a>
+                                    <button type="submit" class="btn btn-success"><i class="fa-solid fa-magnifying-glass"></i> Tìm kiếm</button>
+                                    <a href="${pageContext.request.contextPath}/hotelBooking" class="btn btn-secondary"><i class="fa-solid fa-rotate"></i> Reset</a>
                                 </div>
                             </form>
                             <div class="inner-table">

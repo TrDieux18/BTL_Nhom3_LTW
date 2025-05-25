@@ -560,20 +560,6 @@ body.no-scroll {
     border-radius: 8px;
 }
 
-/* .login-container {
-  position: relative;
-  background: #fff;
-  width: 360px;
-  min-height: 320px;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px #333;
-  align-items: center;
-} */
-
-/* Danh sách quản lí vé máy bay 
-*/
-
 .control-ticket .row {
     display: flex;
     align-items: stretch;
@@ -587,6 +573,7 @@ body.no-scroll {
     flex-direction: column;
     justify-content: start;
     gap: 5px;
+    height: 950px;
 }
 
 .control-ticket .tab-right {
@@ -612,8 +599,6 @@ body.no-scroll {
     font-weight: 500;
     border-radius: 8px;
 }
-
-/* Hover */
 .tab-button:hover {
     background-color: #a72c26;
 }
@@ -628,7 +613,6 @@ body.no-scroll {
     border-left: 5px solid white;
 
 }
-/* Kết thúc  */
 
 /*Modal Delete*/
 .custom-modal {
@@ -715,7 +699,7 @@ body.no-scroll {
 .close-btn:hover {
     color: #000;
 }
-/*End Modal Delete*/
+
 
 
 /*footer*/
@@ -972,6 +956,8 @@ strong {
     border: none;
     border-bottom: 1px solid #eee;
 }
+
+
 /*HotelDetail*/
 .contact-info {
     background-color: #fff;
@@ -980,6 +966,7 @@ form label {
     font-weight: 600;
     padding-bottom:2px;
 }
+
 .x{
     padding-bottom: 6px;
 }
@@ -1000,7 +987,7 @@ form label {
 }
 .form-select-custom {
     border: 1px solid #ced4da;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+/*    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);*/
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
     font-family: var(--font);
     font-size: 16px;
@@ -1019,7 +1006,7 @@ form label {
     }
 }
 
-/* Booked hotel và booked ticket*/
+/* orders*/       
 .booked-card {
     background-color: #fff8f8;
     border: 1px solid #e5e5e5;
@@ -1060,5 +1047,51 @@ form label {
     font-size: 16px;
     font-weight: bold;
     color: #28a745;
-    margin-top: 8px;
+    margin-left: -3px;
+    padding: 0px;
+}
+
+.list-group-item.active {
+    color: #ffffff !important;
+}
+
+/*hotel*/
+.search-hotel {
+    background: var(--color-red);
+}
+
+.hotel-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    margin-bottom: 1.5rem;
+    transition: box-shadow 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+    border-radius: 0.25rem;
+}
+.hotel-card:hover {
+    box-shadow: 0 6px 15px rgba(0,0,0,0.35);
+}
+.hotel-card .card-body {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.box-hotel  {
+    margin-bottom: 20px;
+}
+input.form-control {
+    border-radius: 0.5rem;
+    transition: box-shadow 0.2s;
+}
+
+input.form-control:focus {
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+    border-color: #dc3545;
+}
+
+.btn-danger {
+    border-radius: 0.5rem;
+    font-weight: 500;
 }
