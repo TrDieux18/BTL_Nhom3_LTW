@@ -3,26 +3,22 @@
 <!DOCTYPE html>
 <html lang="vi">
     <head>
-
         <title>Thay đổi mật khẩu</title>
-
         <style>
-            .password-strength {
-                height: 6px;
-                background-color: #e0e0e0;
-                margin-bottom: 5px;
-                border-radius: 5px;
-                overflow: hidden;
-            }
-            .password-strength-bar {
+            html, body {
                 height: 100%;
-                width: 0%;
-                background-color: red;
-                transition: width 0.3s ease;
+                margin: 0;
             }
-            .disabled-button {
-                pointer-events: none;
-                opacity: 0.5;
+            body {
+                display: flex;
+                flex-direction: column;
+                min-height: 100vh;
+            }
+            .container {
+                flex: 1 0 auto;
+            }
+            footer {
+                flex-shrink: 0;
             }
         </style>
     </head>
@@ -104,8 +100,7 @@
             </div>
         </div>
 
-
-<%@include file="footer.jsp" %>
+        <%@include file="footer.jsp" %>
         <script src="./assets/JS/updatepassword.js"></script>
     </body>
 </html>

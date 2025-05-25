@@ -1,14 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <!DOCTYPE html>
-
 <html lang="vi">
     <head>
-
-
-
-        <title>Bán vé máy bay</title>
-
+        <title>Hồ sơ</title>
         <style>
             .avatar {
                 width: 60px;
@@ -20,12 +15,26 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
+            }         
+            html, body {
+                height: 100%;
+                margin: 0;
+            }
+            body {
+                display: flex;
+                flex-direction: column;
+                min-height: 100vh;
+            }
+            .container {
+                flex: 1 0 auto;
+            }
+            footer {
+                flex-shrink: 0;
             }
         </style>
     </head>
     <body>
         <%@include file="header.jsp" %>
-
 
         <div class="container mt-5 mb-5">
             <div class="row">
@@ -72,15 +81,13 @@
                                     <label style="color: black">Thành phố</label><br>
                                     <strong><%= user != null ? user.getAddress(): ""%></strong>
                                 </div>
-
                             </div>
-
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
- <%@include file="footer.jsp" %>
+        <%@include file="footer.jsp" %>
     </body>
 </html>

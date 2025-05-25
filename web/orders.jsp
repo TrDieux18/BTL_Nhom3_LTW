@@ -4,13 +4,29 @@
 <%@ page import="model.Ticket" %>
 <%@ page import="model.HotelBooking" %>
 <%
-
     String type = (String) request.getAttribute("type");
 %>
 <!DOCTYPE html>
 <html lang="vi">
     <head>
         <title>Đơn hàng đã đặt</title>
+        <style>          
+            html, body {
+                height: 100%;
+                margin: 0;
+            }
+            body {
+                display: flex;
+                flex-direction: column;
+                min-height: 100vh;
+            }
+            .container {
+                flex: 1 0 auto;
+            }
+            footer {
+                flex-shrink: 0;
+            }
+        </style>
     </head>
     <body>
         <%@ include file="header.jsp" %>
@@ -31,7 +47,6 @@
 
                 <!-- Main Content -->
                 <div class="col-md-9">
-
                     <!-- Vé máy bay -->
                     <%
                         if (type == null || "all".equals(type) || "flight".equals(type)) {
@@ -95,10 +110,9 @@
                         </div>
                     </form>
                     <% } %>
-
                 </div>
             </div>
         </div>
-                    <%@include file="footer.jsp" %>
+        <%@include file="footer.jsp" %>
     </body>
 </html>

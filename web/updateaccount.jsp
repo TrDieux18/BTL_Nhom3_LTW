@@ -3,8 +3,24 @@
 <!DOCTYPE html>
 <html lang="vi">
     <head>
-
         <title>Bán vé máy bay</title>
+        <style>        
+            html, body {
+                height: 100%;
+                margin: 0;
+            }
+            body {
+                display: flex;
+                flex-direction: column;
+                min-height: 100vh; 
+            }
+            .container {
+                flex: 1 0 auto; 
+            }
+            footer {
+                flex-shrink: 0;
+            }
+        </style>
     </head>
     <body>
         <%@include file="header.jsp" %>
