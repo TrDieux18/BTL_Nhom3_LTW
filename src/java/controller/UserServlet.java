@@ -52,8 +52,12 @@ public class UserServlet extends HttpServlet {
             if (idStr != null && !idStr.isEmpty()) {
                 user.setId(Integer.parseInt(idStr));
                 dao.update(user);
+//                request.setAttribute("message", "Cập nhật người dùng thành công.");
+                User getUser = dao.getUserById(Integer.parseInt(idStr));
+
                 request.setAttribute("message", "Cập nhật người dùng thành công.");
-                request.setAttribute("getUser", user); // Gửi lại thông tin đã cập nhật
+
+                request.setAttribute("getUser", getUser);
             } else {
                 dao.insert(user);
                 request.setAttribute("message", "Thêm người dùng thành công.");
@@ -83,7 +87,7 @@ public class UserServlet extends HttpServlet {
                     int userId = Integer.parseInt(id);
                     User getUser = userDAO.getUserById(userId);
                     if (getUser != null) {
-                        request.setAttribute("getUser", getUser);
+                        request.setAttribute("currentUser", getUser);
                         request.getRequestDispatcher("addUser.jsp").forward(request, response);
                         return;
                     } else {
