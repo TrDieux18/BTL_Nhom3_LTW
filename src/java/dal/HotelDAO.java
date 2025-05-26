@@ -14,7 +14,6 @@ public class HotelDAO extends DBContext {
         String sql = "SELECT * FROM hotel ORDER BY price_per_night DESC";
 
         try (PreparedStatement ps = connection.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
-
             while (rs.next()) {
                 Hotel hotel = new Hotel();
                 hotel.setId(rs.getInt("id"));
@@ -82,7 +81,6 @@ public class HotelDAO extends DBContext {
             connection.setAutoCommit(false);
 
             try (PreparedStatement psBooking = connection.prepareStatement(sqlBooking); PreparedStatement psHotel = connection.prepareStatement(sqlHotel)) {
-
                 psBooking.setInt(1, hotelId);
                 psBooking.executeUpdate();
 
@@ -103,7 +101,7 @@ public class HotelDAO extends DBContext {
         }
     }
 
-    public List<Hotel> searchHotels(String name, String address, String rating, String maxPrice, String sortBy) {
+    public List<Hotel> searchHotels(String name, String address, String ratingTo, String ratingForm, String maxPrice, String sortBy) {
         List<Hotel> list = new ArrayList<>();
         String sql = "SELECT * FROM hotel WHERE 1=1";
         List<Object> params = new ArrayList<>();
@@ -116,13 +114,22 @@ public class HotelDAO extends DBContext {
             params.add("%" + address.trim().toLowerCase() + "%");
         }
 
-        if (rating != null && !rating.trim().isEmpty()) {
+        if (ratingTo != null && !ratingTo.trim().isEmpty()) {
             try {
-                double r = Double.parseDouble(rating.trim());
+                double rTo = Double.parseDouble(ratingTo.trim());
                 sql += " AND CAST(rating AS DECIMAL(2,1)) >= ?";
-                params.add(r);
+                params.add(rTo);
             } catch (NumberFormatException e) {
-                System.err.println("Rating không hợp lệ: " + rating);
+                System.err.println("RatingTo không hợp lệ: " + ratingTo);
+            }
+        }
+        if (ratingForm != null && !ratingForm.trim().isEmpty()) {
+            try {
+                double rForm = Double.parseDouble(ratingForm.trim());
+                sql += " AND CAST(rating AS DECIMAL(2,1)) <= ?";
+                params.add(rForm);
+            } catch (NumberFormatException e) {
+                System.err.println("RatingForm không hợp lệ: " + ratingForm);
             }
         }
         if (maxPrice != null && !maxPrice.trim().isEmpty()) {
@@ -208,37 +215,32 @@ public class HotelDAO extends DBContext {
         StringBuilder sql = new StringBuilder("SELECT * FROM hotel WHERE 1=1");
         List<Object> params = new ArrayList<>();
 
-        // Lọc theo địa chỉ (tìm gần đúng, không phân biệt hoa thường)
         if (address != null && !address.trim().isEmpty()) {
             sql.append(" AND LOWER(address) LIKE ?");
             params.add("%" + address.trim().toLowerCase() + "%");
         }
 
-        // Lọc theo mức giá theo priceRange (chuẩn hóa theo yêu cầu: 3 mức giá)
         if (priceRange != null && !priceRange.trim().isEmpty()) {
             switch (priceRange) {
-                case "1": // Dưới 500.000 VNĐ
+                case "1":
                     sql.append(" AND price_per_night < 1000000");
                     break;
-                case "2": // Từ 500.000 đến dưới 1.500.000 VNĐ
+                case "2":
                     sql.append(" AND price_per_night >= 1000000 AND price_per_night < 2500000");
                     break;
-                case "3": // Từ 1.500.000 VNĐ trở lên
+                case "3":
                     sql.append(" AND price_per_night >= 2500000");
                     break;
                 default:
-                    // Nếu giá trị khác, không lọc giá
                     break;
             }
         }
 
-        // Lọc theo số phòng còn trống tối thiểu
         if (minRooms != null) {
             sql.append(" AND rooms_available >= ?");
             params.add(minRooms);
         }
 
-       
         sql.append(" ORDER BY price_per_night DESC");
 
         try (PreparedStatement ps = connection.prepareStatement(sql.toString())) {
@@ -279,7 +281,6 @@ public class HotelDAO extends DBContext {
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, userId);
             ps.setInt(2, hotelId);
-
             ps.setDate(3, java.sql.Date.valueOf(checkIn));
             ps.setDate(4, java.sql.Date.valueOf(checkOut));
             ps.setTimestamp(5, java.sql.Timestamp.valueOf(bookingDate));
@@ -289,7 +290,6 @@ public class HotelDAO extends DBContext {
             ps.setString(9, status);
 
             ps.executeUpdate();
-
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Lỗi khi thêm đặt phòng vào cơ sở dữ liệu: " + e.getMessage());

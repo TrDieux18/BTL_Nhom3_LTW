@@ -1,13 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package controller;
 
 import dal.HotelDAO;
-
 import java.io.IOException;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -17,10 +11,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import java.io.File;
 import java.nio.file.Paths;
-
 import java.util.List;
 import model.Hotel;
-
 
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024,
@@ -53,7 +45,6 @@ public class HotelServlet extends HttpServlet {
             Hotel hotel;
 
             if (idStr != null && !idStr.isEmpty()) {
-
                 int id = Integer.parseInt(idStr);
                 hotel = dao.getHotelById(id);
                 if (hotel == null) {
@@ -61,7 +52,6 @@ public class HotelServlet extends HttpServlet {
                     return;
                 }
             } else {
-
                 hotel = new Hotel();
                 hotel.setCreatedBy("admin");
             }
@@ -72,7 +62,6 @@ public class HotelServlet extends HttpServlet {
             hotel.setRating(rating);
             hotel.setPrice_per_night(Long.parseLong(pricePerNight));
             hotel.setRoomsAvailable(Integer.parseInt(roomsAvailable));
-            
 
             if (imagePart != null && imagePart.getSize() > 0) {
                 String realPath = getServletContext().getRealPath("/uploads");
@@ -88,7 +77,6 @@ public class HotelServlet extends HttpServlet {
 
                 hotel.setImage("assets/images/" + imageFileName);
             } else if (hotel.getImage() == null || hotel.getImage().isEmpty()) {
-
                 response.getWriter().println("Bạn cần thêm hình ảnh.");
                 return;
             }
@@ -118,32 +106,30 @@ public class HotelServlet extends HttpServlet {
 
         try {
             if ("edit".equals(action)) {
-                // Xử lý sửa
                 if (id != null && !id.isEmpty()) {
                     Hotel hotel = hotelDAODAO.getHotelById(Integer.parseInt(id));
                     request.setAttribute("hotel", hotel);
                     request.getRequestDispatcher("addHotel.jsp").forward(request, response);
                     return;
                 } else {
-                    // id không hợp lệ, chuyển hướng về management
                     response.sendRedirect("management");
                     return;
                 }
             } else if ("delete".equals(action)) {
-                // Xử lý xóa
                 if (id != null && !id.isEmpty()) {
                     hotelDAODAO.delete(Integer.parseInt(id));
                 }
-                response.sendRedirect("management"); // hoặc trang danh sách vé sau khi xóa
+                response.sendRedirect("management");
             } else if ("search".equals(action)) {
                 String name = request.getParameter("name");
                 String address = request.getParameter("address");
-                String rating = request.getParameter("rating");
+                String ratingTo = request.getParameter("ratingTo");
+                String ratingForm = request.getParameter("ratingForm");
                 String priceStr = request.getParameter("price");
                 String sortBy = request.getParameter("sortBy");
 
                 HotelDAO hotelDAO = new HotelDAO();
-                List<Hotel> result = hotelDAO.searchHotels(name, address, rating, priceStr, sortBy);
+                List<Hotel> result = hotelDAO.searchHotels(name, address, ratingTo, ratingForm, priceStr, sortBy);
 
                 request.setAttribute("hotels", result);
                 request.setAttribute("tab", "hotel");
@@ -154,9 +140,7 @@ public class HotelServlet extends HttpServlet {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            // Có thể show trang lỗi hoặc trả về thông báo lỗi
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Lỗi khi xử lý yêu cầu: " + e.getMessage());
         }
     }
-
 }

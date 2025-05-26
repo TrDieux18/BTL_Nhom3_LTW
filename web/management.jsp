@@ -8,67 +8,14 @@
 <!DOCTYPE html>
 <html>
     <head>
+
         <title>Quản lí</title>
-        <style>       
-            html, body {
-                height: 100%;
-                margin: 0;
-            }
-            body {
-                display: flex;
-                flex-direction: column;
-                min-height: 100vh; 
-            }
-            section.control-ticket {
-                flex: 1 0 auto;
-                display: flex;
-                flex-direction: column;
-            }
-            .row {
-                flex: 1 0 auto;
-                display: flex;
-                margin: 0;
-            }
-            .col-2.tab-left, .col-10.tab-right {
-                display: flex;
-                flex-direction: column;
-                height: 100%;
-            }
-            .tab-right .container-fluid {
-                flex: 1 0 auto;
-                display: flex;
-                flex-direction: column;
-                height: 100%;
-            }
-            .tab-content {
-                flex: 1 0 auto;
-                display: flex;
-                flex-direction: column;
-                min-height: 400px;
-            }
-            .inner-table {
-                flex: 1 0 auto;
-                display: flex;
-                flex-direction: column;
-            }
-            .table {
-                flex: 1 0 auto;
-                display: flex;
-                flex-direction: column;
-                min-height: 300px;
-            }
-            .table tbody {
-                flex: 1 0 auto;
-            }
-            footer {
-                flex-shrink: 0;
-            }
-        </style>
     </head>
     <body>
         <%@include file="header.jsp" %>
         <section class="control-ticket">
             <div class="row">
+
                 <div class="col-2 tab-left">
                     <div class="container">
                         <h2 class="inner-desc tab-button active" data-tab="flight">Vé Máy Bay</h2>
@@ -76,8 +23,10 @@
                         <h2 class="inner-desc tab-button" data-tab="customer">Người Dùng</h2>
                         <h2 class="inner-desc tab-button" data-tab="bookingHistory">Đặt Vé</h2>
                         <h2 class="inner-desc tab-button" data-tab="hotelBooking">Đặt Khách Sạn</h2>
+
                     </div>
                 </div>
+
 
                 <div class="col-10 tab-right">
                     <div class="container-fluid">
@@ -87,6 +36,7 @@
                             <!-- FORM TÌM KIẾM -->
                             <form class="row g-3 mb-4" action="${pageContext.request.contextPath}/ticket" method="get">
                                 <input type="hidden" name="tab" value="flight" />
+
                                 <input type="hidden" name="action" value="search" />
                                 <div class="col-md-3">
                                     <input type="text" class="form-control" name="airline" placeholder="Hãng máy bay">
@@ -100,6 +50,7 @@
                                 <div class="col-md-2">
                                     <input type="text" class="form-control" name="price" placeholder="Giá vé (tối đa)">
                                 </div>
+
                                 <div class="col-md-12" style="margin-top: 20px; display: flex; gap: 20px; align-items: center;">
                                     <select class="form-select" name="sortBy" 
                                             style="height: 38px; width: 180px; min-width: 150px; max-width: 220px; padding: 5px 10px; font-size: 1rem; border-radius: 4px; border: 1px solid #ced4da; transition: border-color 0.3s ease;">
@@ -107,11 +58,16 @@
                                         <option value="airline">Tên hãng bay</option>
                                         <option value="price">Giá vé</option>
                                     </select>
+
                                     <button type="submit" class="btn btn-success"><i class="fa-solid fa-magnifying-glass"></i> Tìm kiếm</button>
                                     <a href="${pageContext.request.contextPath}/ticket" class="btn btn-secondary"><i class="fa-solid fa-rotate"></i> Reset</a>
                                 </div>
+
                             </form>
-                            <a class="btn btn-primary" style="display: flex; align-items: center; gap: 5px;" href="addTicket.jsp"><i class="fa-solid fa-plus"></i>Thêm vé máy bay</a>
+
+                            <a  class="btn btn-primary" style="display: flex; align-items: center; gap: 5px;" href="addTicket.jsp"><i class="fa-solid fa-plus"></i>Thêm vé máy bay</a>
+
+
                             <div class="inner-table">
                                 <table class="table table-bordered">
                                     <thead>
@@ -146,10 +102,14 @@
                                             <td><%= t.getType() %></td>
                                             <td><%= t.getPrice() %></td>
                                             <td>
-                                                <a class="delete-btn btn btn-danger" href="${pageContext.request.contextPath}/ticket?action=delete&id=<%= t.getId() %>">
+                                                <a
+                                                    class="delete-btn btn btn-danger"
+                                                    href="${pageContext.request.contextPath}/ticket?action=delete&id=<%= t.getId() %>">
                                                     <i class="fa-solid fa-trash"></i>
                                                 </a>
+
                                                 <a href="${pageContext.request.contextPath}/ticket?action=edit&id=<%= t.getId() %>" class="btn btn-info"><i class="fa-solid fa-pen-to-square"></i></a>
+
                                             </td>
                                         </tr>
                                         <%
@@ -171,31 +131,39 @@
                             <form class="row g-3 mb-4" action="${pageContext.request.contextPath}/hotel" method="get">
                                 <input type="hidden" name="tab" value="hotel" />
                                 <input type="hidden" name="action" value="search" />
+
                                 <div class="col-md-3">
                                     <input type="text" class="form-control" name="name" placeholder="Tên khách sạn" value="${param.name}">
                                 </div>
+
                                 <div class="col-md-3">
                                     <input type="text" class="form-control" name="address" placeholder="Địa chỉ" value="${param.address}">
                                 </div>
+
                                 <div class="col-md-3">
                                     <input type="text" class="form-control" name="rating" placeholder="Đánh giá (tối thiểu)" value="${param.rating}">
                                 </div>
+
                                 <div class="col-md-3">
                                     <input type="text" class="form-control" name="price" placeholder="Giá mỗi đêm (tối đa)" value="${param.price}">
                                 </div>
+
                                 <div class="col-md-12" style="margin-top: 10px; display: flex; gap: 15px; align-items: center;">
                                     <select class="form-select" name="sortBy" style="height: 38px; width: 180px; min-width: 150px; max-width: 220px; padding: 5px 10px; font-size: 1rem; border-radius: 4px; border: 1px solid #ced4da; transition: border-color 0.3s ease;">
                                         <option value="" ${empty param.sortBy ? "selected" : ""}>-- Sắp xếp --</option>
                                         <option value="name" ${param.sortBy == 'name' ? "selected" : ""}>Tên khách sạn</option>
                                         <option value="price" ${param.sortBy == 'price' ? "selected" : ""}>Giá mỗi đêm</option>
                                     </select>
+
                                     <button type="submit" class="btn btn-success"><i class="fa-solid fa-magnifying-glass"></i> Tìm kiếm</button>
                                     <a href="${pageContext.request.contextPath}/hotel" class="btn btn-secondary"><i class="fa-solid fa-rotate"></i> Reset</a>
                                 </div>
                             </form>
+
                             <a class="btn btn-primary" style="display: flex; align-items: center; gap: 5px;" href="addHotel.jsp">
                                 <i class="fa-solid fa-plus"></i>Thêm khách sạn
                             </a>
+
                             <div class="inner-table">
                                 <table class="table table-bordered">
                                     <thead>
@@ -224,7 +192,10 @@
                                             <td><%= h.getRating() %></td>
                                             <td><%= h.getPrice_per_night() %></td>
                                             <td>
-                                                <a class="delete-btn btn btn-danger" href="${pageContext.request.contextPath}/hotel?action=delete&id=<%= h.getId() %>">
+                                                <a
+                                                    class="delete-btn btn btn-danger"
+                                                    href="${pageContext.request.contextPath}/hotel?action=delete&id=<%= h.getId() %>"
+                                                    >
                                                     <i class="fa-solid fa-trash"></i>
                                                 </a>
                                                 <a href="${pageContext.request.contextPath}/hotel?action=edit&id=<%= h.getId() %>" class="btn btn-info"><i class="fa-solid fa-pen-to-square"></i></a>
@@ -243,21 +214,27 @@
                             </div>
                         </div>
 
+
+
                         <!-- Nội dung: Người dùng -->
                         <div class="tab-content" id="customer" style="display: none">
                             <h2 class="text-center inner-desc text-dark">Danh sách người dùng</h2>
                             <form class="row g-3 mb-4" action="${pageContext.request.contextPath}/userServlet" method="get">
                                 <input type="hidden" name="tab" value="customer" />
                                 <input type="hidden" name="action" value="search" />
+
                                 <div class="col-md-3">
                                     <input type="text" class="form-control" name="fullname" placeholder="Họ tên" value="<%= request.getParameter("fullname") != null ? request.getParameter("fullname") : "" %>">
                                 </div>
+
                                 <div class="col-md-3">
                                     <input type="text" class="form-control" name="username" placeholder="Tên tài khoản" value="<%= request.getParameter("username") != null ? request.getParameter("username") : "" %>">
                                 </div>
+
                                 <div class="col-md-3">
                                     <input type="text" class="form-control" name="address" placeholder="Địa chỉ" value="<%= request.getParameter("address") != null ? request.getParameter("address") : "" %>">
                                 </div>
+
                                 <div class="col-md-2">
                                     <select class="form-select" name="roleId" style="height: 36px; width: 180px; min-width: 150px; max-width: 220px; padding: 5px 10px; font-size: 1rem; border-radius: 4px; border: 1px solid #ced4da; transition: border-color 0.3s ease;">
                                         <option value="">-- Vai trò --</option>
@@ -265,6 +242,9 @@
                                         <option value="2" <%= "2".equals(request.getParameter("roleId")) ? "selected" : "" %>>CUSTOMER</option>
                                     </select>
                                 </div>
+
+
+
                                 <div class="col-md-4" style="margin-top: 10px; display: flex; gap: 15px; align-items: center;">
                                     <select class="form-select" name="sortBy" style="height: 38px; width: 180px; min-width: 150px; max-width: 220px; padding: 5px 10px; font-size: 1rem; border-radius: 4px; border: 1px solid #ced4da; transition: border-color 0.3s ease;">
                                         <option value="">-- Sắp xếp --</option>
@@ -275,7 +255,8 @@
                                     <a href="${pageContext.request.contextPath}/userServlet?tab=customer" class="btn btn-secondary"><i class="fa-solid fa-rotate"></i> Reset</a>
                                 </div>
                             </form>
-                            <a class="btn btn-primary" style="display: flex; align-items: center; gap: 5px;" href="addUser.jsp"><i class="fa-solid fa-plus"></i>Thêm người dùng</a>
+
+                            <a  class="btn btn-primary" style="display: flex; align-items: center; gap: 5px;" href="addUser.jsp"><i class="fa-solid fa-plus"></i>Thêm người dùng</a>
                             <div class="inner-table">
                                 <table class="table table-bordered">
                                     <thead>
@@ -307,13 +288,16 @@
                                             <td><%= u.getRoleId() == 1 ? "ADMIN" : "CUSTOMER" %></td>
                                             <td>
                                                 <% if (u.getRoleId() != 1) { %>
-                                                <a class="delete-btn btn btn-danger" href="<%= request.getContextPath() %>/userServlet?action=delete&id=<%= u.getId() %>">
+                                                <a
+                                                    class="delete-btn btn btn-danger"
+                                                    href="<%= request.getContextPath() %>/userServlet?action=delete&id=<%= u.getId() %>">
                                                     <i class="fa-solid fa-trash"></i>
                                                 </a>
                                                 <a href="<%= request.getContextPath() %>/userServlet?action=edit&id=<%= u.getId() %>" class="btn btn-info"><i class="fa-solid fa-pen-to-square"></i></a>
                                                 <% } else { %>
                                                 Không có quyền
                                                 <% } %>
+
                                             </td>
                                         </tr>
                                         <%
@@ -329,12 +313,14 @@
                             </div>
                         </div>
 
-                        <!-- Nội dung: Đặt vé -->
+                        <!--Nội dung: Đặt vé--> 
                         <div class="tab-content" id="bookingHistory" style="display: none">
                             <h2 class="text-center inner-desc text-dark">Lịch sử đặt vé</h2>
+
                             <form action="${pageContext.request.contextPath}/bookingHistory" method="get" class="row g-3 mb-4">
                                 <input type="hidden" name="tab" value="bookingHistory" />
                                 <input type="hidden" name="action" value="search" />
+
                                 <div class="col-md-3">
                                     <input type="text" class="form-control" name="userName" placeholder="Tên người đặt" value="${param.userName != null ? param.userName : ''}">
                                 </div>
@@ -347,6 +333,7 @@
                                 <div class="col-md-3">
                                     <input type="text" class="form-control" name="destination" placeholder="Điểm đến" value="${param.destination != null ? param.destination : ''}">
                                 </div>
+
                                 <div class="col-md-4" style="margin-top: 10px; display: flex; gap: 15px; align-items: center;">
                                     <select class="form-select" name="sortBy" style="height: 38px; width: 180px; min-width: 150px; max-width: 220px; padding: 5px 10px; font-size: 1rem; border-radius: 4px; border: 1px solid #ced4da; transition: border-color 0.3s ease;">
                                         <option value="" ${param.sortBy == null || param.sortBy == '' ? 'selected' : ''}>-- Sắp xếp --</option>
@@ -357,23 +344,26 @@
                                     <a href="${pageContext.request.contextPath}/bookingHistory" class="btn btn-secondary"><i class="fa-solid fa-rotate"></i> Reset</a>
                                 </div>
                             </form>
+
                             <div class="mb-3 d-flex gap-2">
                                 <form action="${pageContext.request.contextPath}/bookingHistory" method="get" style="margin-right: 20px;">
                                     <input type="hidden" name="action" value="statByUser">
                                     <input type="hidden" name="tab" value="bookingHistory" />
-                                    <button type="submit" class="btn btn-primary" style="font-weight: 500"><i class="fa-solid fa-chart-simple"></i> Thống kê theo người đặt</button>
+                                    <button type="submit" class="btn btn-primary"><i class="fa-solid fa-chart-simple"></i> Thống kê theo người đặt</button>
                                 </form>
                                 <form action="${pageContext.request.contextPath}/bookingHistory" method="get">
                                     <input type="hidden" name="tab" value="bookingHistory" />
                                     <input type="hidden" name="action" value="statByTicketType">
-                                    <button type="submit" class="btn btn-warning" style="font-weight: 500;color: #fdfdfd;"><i class="fa-solid fa-chart-line"></i> Thống kê theo loại vé</button>
+                                    <button type="submit" class="btn btn-warning" style="color: #fdfdfe"><i class="fas fa-chart-line"></i> Thống kê theo loại vé</button>
                                 </form>
                             </div>
+
                             <%
                                 String action = request.getParameter("action");
                                 List<BookingHistory> bhs = (List<BookingHistory>) request.getAttribute("bookingHistorys");
                                 List<Object[]> stats = (List<Object[]>) request.getAttribute("statistics");
                             %>
+
                             <% if (action == null || "search".equals(action)) { %>
                             <div class="inner-table">
                                 <table class="table table-bordered">
@@ -388,6 +378,7 @@
                                             <th scope="col">Trạng thái</th>
                                             <th scope="col">Số lượng</th>
                                             <th scope="col">Tổng tiền</th>
+
                                         </tr>
                                     </thead>
                                     <tbody id="bookingHistoryList">
@@ -406,6 +397,8 @@
                                             <td><%= bh.getOrderStatus() %></td>
                                             <td><%= bh.getQuantity() %></td>
                                             <td><%= bh.getTotalPrice() %></td>
+
+<!--                                            
                                         </tr>
                                         <%      }
                                             } else {
@@ -417,70 +410,70 @@
                             </div>
                             <% } else if ("statByUser".equals(action) && stats != null) { %>
                             <h3 class="mt-4">📊 Thống kê theo người đặt</h3>
-                            <div class="inner-table">
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>STT</th>
-                                            <th>Tên người đặt</th>
-                                            <th>Loại vé</th>
-                                            <th>Giá vé</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <% int i = 1;
-                                           for (Object[] row : stats) { %>
-                                        <tr>
-                                            <td><%= i++ %></td>
-                                            <td><%= row[0] %></td>
-                                            <td><%= row[1] %></td>
-                                            <td><%= row[2] %></td>
-                                        </tr>
-                                        <% } %>
-                                    </tbody>
-                                </table>
-                            </div>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>Tên người đặt</th>
+                                        <th>Loại vé</th>
+                                        <th>Giá vé</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% int i = 1;
+               for (Object[] row : stats) { %>
+                                    <tr>
+                                        <td><%= i++ %></td>
+                                        <td><%= row[0] %></td>  <%-- Tên người đặt --%>
+                                        <td><%= row[1] %></td>  <%-- Loại vé --%>
+                                        <td><%= row[2] %></td>  <%-- Giá vé --%>
+                                    </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
                             <% } else if ("statByTicketType".equals(action) && stats != null) { %>
                             <h3 class="mt-4">📈 Thống kê theo loại vé</h3>
-                            <div class="inner-table">
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>STT</th>
-                                            <th>Loại vé</th>
-                                            <th>Tổng số vé</th>
-                                            <th>Tổng số tiền</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <% int i = 1;
-                                           for (Object[] row : stats) { %>
-                                        <tr>
-                                            <td><%= i++ %></td>
-                                            <td><%= row[0] %></td>
-                                            <td><%= row[1] %></td>
-                                            <td><%= row[2] %></td>
-                                        </tr>
-                                        <% } %>
-                                    </tbody>
-                                </table>
-                            </div>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>Loại vé</th>
+                                        <th>Tổng số vé</th>
+                                        <th>Tổng số tiền</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% int i = 1;
+               for (Object[] row : stats) { %>
+                                    <tr>
+                                        <td><%= i++ %></td>
+                                        <td><%= row[0] %></td>   <%-- Loại vé --%>
+                                        <td><%= row[1] %></td>   <%-- Tổng số vé --%>
+                                        <td><%= row[2] %></td>   <%-- Tổng số tiền --%>
+                                    </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
                             <% } %>
                         </div>
 
-                        <!-- Nội dung đặt khách sạn -->
+
+
+                        <!--Nội dung đặt khách sạn-->
                         <div class="tab-content" id="hotelBooking" style="display: none">
                             <h2 class="text-center inner-desc text-dark">Lịch sử đặt khách sạn</h2>
                             <form action="${pageContext.request.contextPath}/hotelBooking" method="get" class="row g-3 mb-4" style="display: flex; gap: 15px; align-items: center; justify-content: center;">
                                 <input type="hidden" name="tab" value="hotelBooking" />
                                 <input type="hidden" name="action" value="search" />
+
                                 <div class="col-md-3">
                                     <input type="text" class="form-control" name="userName" placeholder="Tên người đặt" value="${param.userName != null ? param.userName : ''}">
                                 </div>
                                 <div class="col-md-3">
                                     <input type="text" class="form-control" name="hotelName" placeholder="Tên khách sạn" value="${param.hotelName != null ? param.hotelName : ''}">
                                 </div>
-                                <div class="col-md-4" style="display: flex; gap: 15px;">
+
+                                <div class="col-md-4"  style=" display: flex; gap: 15px;">
                                     <select class="form-select" name="sortBy" style="height: 38px; width: 180px; min-width: 150px; max-width: 220px; padding: 5px 10px; font-size: 1rem; border-radius: 4px; border: 1px solid #ced4da; transition: border-color 0.3s ease;">
                                         <option value="" ${param.sortBy == null || param.sortBy == '' ? 'selected' : ''}>-- Sắp xếp --</option>
                                         <option value="roomQuantity" ${param.sortBy == 'roomQuantity' ? 'selected' : ''}>Số lượng phòng</option>
@@ -501,8 +494,11 @@
                                             <th scope="col">Ngày trả phòng</th>
                                             <th scope="col">Số lượng phòng</th>
                                             <th scope="col">Tổng tiền</th>
+
                                             <th scope="col">Trạng thái</th>
                                             <th scope="col">Ghi chú</th>
+
+                                            <!--<th scope="col">Thao tác</th>-->
                                         </tr>
                                     </thead>
                                     <tbody id="hotelBookingList">
@@ -514,11 +510,14 @@
                                         %>
                                         <tr>
                                             <th scope="row"><%= hbsIndex++ %></th>
-                                            <td><%= hb.getUserName() %></td>
+
+                                            <td><%=hb.getUserName() %></td>
                                             <td><%= hb.getHotelName() %></td>
                                             <td><%= hb.getCheckInDate() %></td>
                                             <td><%= hb.getCheckOutDate() %></td>
+
                                             <td><%= hb.getRoomQuantity() %></td>
+
                                             <td><%= hb.getTotalPrice() %></td>
                                             <td><%= hb.getStatus() %></td>
                                             <td><%= hb.getNotes() %></td>
@@ -535,16 +534,23 @@
                                 </table>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
         </section>
 
+
+
         <script>
             document.querySelectorAll(".tab-button").forEach((button) => {
                 button.addEventListener("click", () => {
                     const tabId = button.getAttribute("data-tab");
+
+
                     const newUrl = window.location.pathname + '?tab=' + tabId;
+
+
                     window.location.href = newUrl;
                 });
             });
@@ -559,6 +565,7 @@
                         btn.classList.add("active");
                     }
                 });
+
                 document.querySelectorAll(".tab-content").forEach((tab) => {
                     tab.style.display = "none";
                     if (tab.id === activeTab) {
@@ -566,13 +573,18 @@
                     }
                 });
             } else {
+
                 document.querySelectorAll(".tab-button").forEach((btn) => btn.classList.remove("active"));
                 const defaultTabBtn = document.querySelector(".tab-button[data-tab='flight']");
-                if (defaultTabBtn) defaultTabBtn.classList.add("active");
+                if (defaultTabBtn)
+                    defaultTabBtn.classList.add("active");
+
                 document.querySelectorAll(".tab-content").forEach((tab) => tab.style.display = "none");
                 const defaultTabContent = document.getElementById('flight');
-                if (defaultTabContent) defaultTabContent.style.display = "block";
+                if (defaultTabContent)
+                    defaultTabContent.style.display = "block";
             }
+
         </script>
         <%@include file="footer.jsp" %>
     </body>
