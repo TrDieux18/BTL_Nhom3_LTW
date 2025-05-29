@@ -60,7 +60,7 @@
                     <div id="addressError" style="color: var(--color-red); display: none;"></div>
                 </div>
                 <button style="width: 100%" type="submit" class="btn btn-danger">Đăng ký</button>
-                <div class="login-link">Bạn đã có tài khoản? <a href="login.jsp">Đăng nhập ngay</a></div>               
+                <div class="login-link">Bạn đã có tài khoản? <a href="log">Đăng nhập ngay</a></div>               
             </form>
     </section>
     </main>   
@@ -85,7 +85,7 @@
                     dataType: 'json',
                     success: function(response) {
                         if (response.status === 'success') {                        
-                            window.location.href = 'login.jsp';
+                            window.location.href = 'log';
                         } else {                          
                             if (response.errors) {
                                 if (response.errors.fullname) {

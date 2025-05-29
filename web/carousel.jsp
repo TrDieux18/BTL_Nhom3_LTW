@@ -30,8 +30,8 @@
                   <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
                 </ol>
                 <div class="carousel-inner">
-                    <div class="carousel-item active"><img src="assets/images/b1.jpg" alt="First slide" /></div>
-                    <div class="carousel-item"><img src="assets/images/b2.jpg" alt="Second slide" /></div>
+                    <div class="carousel-item active"><img src="assets/images/p1.jpg" alt="First slide" /></div>
+                    <div class="carousel-item"><img src="assets/images/p2.jpg" alt="Second slide" /></div>
                 </div>
             </div>
           </div>

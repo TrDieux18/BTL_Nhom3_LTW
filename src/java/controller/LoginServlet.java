@@ -45,15 +45,15 @@ public class LoginServlet extends HttpServlet {
             if (user != null) {
                 request.getSession().setAttribute("user", user);
                 if (user.getRoleId() == 2) {
-                    response.sendRedirect("home.jsp"); // User bình thường
+                    response.sendRedirect("home"); // User bình thường
                 } else if (user.getRoleId() == 1) {
                     response.sendRedirect("management"); // Admin
                 }
             } else {
                 if ("modal".equals(source)) {
-                    response.sendRedirect("home.jsp?error=true");
+                    response.sendRedirect("home?error=true");
                 } else {
-                    response.sendRedirect("login.jsp?error=true");
+                    response.sendRedirect("log?error=true");
                 }
             }
         } catch (Exception e) {

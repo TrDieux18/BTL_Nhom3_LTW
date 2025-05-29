@@ -67,8 +67,8 @@
                                         <div id="userDropdown" class="user-dropdown" style="display:none;">
                                             <ul>
                                                 <li><a href="${pageContext.request.contextPath}/orders?action=get&id=<%= user.getId() %>"><i class="fa-solid fa-list"></i>Danh sách đơn hàng</a></li>
-                                                <li><a href="account.jsp"><i class="fa-solid fa-user"></i> Hồ sơ</a></li>
-                                                <li><a href="updatepassword.jsp"><i class="fa-solid fa-key"></i> Thay đổi mật khẩu</a></li>
+                                                <li><a href="profile"><i class="fa-solid fa-user"></i> Hồ sơ</a></li>
+                                                <li><a href="password"><i class="fa-solid fa-key"></i> Thay đổi mật khẩu</a></li>
                                                 <li class="logout"><a href="logout" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a></li>
                                             </ul>
                                         </div>
@@ -83,8 +83,8 @@
                                         <div id="userDropdown" class="user-dropdown" style="display:none;">
                                             <ul>
                                                 <li><a href="${pageContext.request.contextPath}/management"><i class="fa-solid fa-list"></i>Quản lí thông tin</a></li>
-                                                <li><a href="account.jsp"><i class="fa-solid fa-user"></i> Hồ sơ</a></li>
-                                                <li><a href="updatepassword.jsp"><i class="fa-solid fa-key"></i> Thay đổi mật khẩu</a></li>
+                                                <li><a href="profile"><i class="fa-solid fa-user"></i> Hồ sơ</a></li>
+                                                <li><a href="password"><i class="fa-solid fa-key"></i> Thay đổi mật khẩu</a></li>
                                                 <li class="logout"><a href="logout" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a></li>
                                             </ul>
                                         </div>
@@ -94,7 +94,7 @@
                                     } else {
                                     %>
                                     <li><button id="openLogin"><i class="fa-solid fa-circle-user nav-icon"></i>Đăng nhập</button></li>
-                                    <li><a href="register.jsp">Đăng ký</a></li>
+                                    <li><a href="reg">Đăng ký</a></li>
                                     <%
                                         }
                                     %>
@@ -128,7 +128,7 @@
                 </div>
                 <button style="width: 100%;" type="submit" class="btn btn-danger">Đăng Nhập</button>
                 <div class="register-link">
-                    Chưa có tài khoản? <a href="register.jsp">Đăng ký</a>
+                    Chưa có tài khoản? <a href="reg">Đăng ký</a>
                 </div>
             </form>
         </div>

@@ -17,9 +17,9 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author DELL
  */
-@WebServlet(name="HomeController", urlPatterns={"/home"})
-public class HomeController extends HttpServlet {
-
+@WebServlet({"/log", "/reg","/home","/profile","/password","/c_profile"}) // Ánh xạ nhiều URL
+public class ControllerServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -35,10 +35,10 @@ public class HomeController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet HomeController</title>");
+            out.println("<title>Servlet NewServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet HomeController at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet NewServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -55,7 +55,30 @@ public class HomeController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-         request.getRequestDispatcher("home.jsp").forward(request, response);
+        String path = request.getServletPath();
+
+        switch (path) {
+            case "/log":
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+                break;
+            case "/reg":
+                request.getRequestDispatcher("register.jsp").forward(request, response);
+                break;  
+            case "/home":
+            request.getRequestDispatcher("home.jsp").forward(request, response);
+            break;   
+            case "/profile":
+                request.getRequestDispatcher("account.jsp").forward(request, response);
+                break;  
+            case "/password":
+            request.getRequestDispatcher("updatepassword.jsp").forward(request, response);
+            break;
+            case "/c_profile":
+                request.getRequestDispatcher("updateaccount.jsp").forward(request, response);
+                break;  
+            default:               
+                break;
+        }
     }
 
     /**
@@ -67,7 +90,7 @@ public class HomeController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {       
+    throws ServletException, IOException {
         processRequest(request, response);
     }
 

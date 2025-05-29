@@ -31,6 +31,7 @@ public class HotelBookingDAO extends DBContext {
                 hb.setHotelName(rs.getString("name"));
                 hb.setCheckInDate(rs.getString("checkin_date"));
                 hb.setCheckOutDate(rs.getString("checkout_date"));
+                hb.setBookingDate(rs.getString("booking_date"));
                 hb.setRoomQuantity(rs.getInt("room_quantity"));
                 hb.setTotalPrice(rs.getLong("total_price"));
                 hb.setStatus(rs.getString("status"));
@@ -84,6 +85,7 @@ public class HotelBookingDAO extends DBContext {
                     hb.setHotelName(rs.getString("name"));
                     hb.setCheckInDate(rs.getString("checkin_date"));
                     hb.setCheckOutDate(rs.getString("checkout_date"));
+                    hb.setBookingDate(rs.getString("booking_date"));
                     hb.setRoomQuantity(rs.getInt("room_quantity"));
                     hb.setTotalPrice(rs.getLong("total_price"));
                     hb.setStatus(rs.getString("status"));
@@ -115,6 +117,7 @@ public class HotelBookingDAO extends DBContext {
                     hb.setHotelName(rs.getString("name"));
                     hb.setCheckInDate(rs.getString("checkin_date"));
                     hb.setCheckOutDate(rs.getString("checkout_date"));
+                    hb.setBookingDate(rs.getString("booking_date"));
                     hb.setRoomQuantity(rs.getInt("room_quantity"));
                     hb.setTotalPrice(rs.getLong("total_price"));
                     hb.setStatus(rs.getString("status"));

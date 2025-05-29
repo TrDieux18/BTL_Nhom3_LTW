@@ -106,8 +106,8 @@
                                             </div>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="note" class="form-label" style="resize: none;">Ghi chú:</label>
-                                            <textarea id="note" name="note" rows="3" class="form-control" placeholder="Nhập ghi chú nếu có..."></textarea>
+                                            <label for="note" class="form-label">Ghi chú:</label>
+                                            <textarea id="note" name="note" rows="3" class="form-control" placeholder="Nhập ghi chú nếu có..." style="resize: none;"></textarea>
                                         </div>
                                         <div class="mb-3 total-price-container">
                                             <div class="price-display">

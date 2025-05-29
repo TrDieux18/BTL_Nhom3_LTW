@@ -48,8 +48,8 @@
                             <div class="menu-right">
                                 <ul>
                                     <li><a href="#"><i class="fa-solid fa-cart-shopping nav-item"></i></a></li>
-                                    <li><a href="login.jsp" style="text-decoration: none;"><button id="openLogin"><i class="fa-solid fa-circle-user nav-icon"></i>Đăng nhập</button></a></li>
-                                    <li><a href="register.jsp">Đăng kí</a></li>
+                                    <li><a href="log" style="text-decoration: none;"><button id="openLogin"><i class="fa-solid fa-circle-user nav-icon"></i>Đăng nhập</button></a></li>
+                                    <li><a href="reg">Đăng kí</a></li>
                                 </ul>
                             </div>
                         </div>

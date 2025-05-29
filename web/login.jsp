@@ -42,7 +42,7 @@
                 Tài khoản hoặc mật khẩu không đúng.
             </div>
             <button style="width: 100%;" type="submit" class="btn btn-danger">Đăng nhập</button>
-            <div class="login-link mt-3">Bạn chưa có tài khoản? <a href="register.jsp">Đăng kí ngay</a></div>
+            <div class="login-link mt-3">Bạn chưa có tài khoản? <a href="reg">Đăng kí ngay</a></div>
         </form>
     </section>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
