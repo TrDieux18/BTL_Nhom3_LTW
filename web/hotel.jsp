@@ -40,13 +40,13 @@
                 <form action="hotelList" method="get" class="row g-3 align-items-end">
                     <div class="col-12 mb-2">
                         <h4 class="text-danger font-weight-bold" style="font-size: 25px;">
-                            🔍 Tìm kiếm khách sạn
+                            Tìm kiếm khách sạn
                         </h4>
                     </div>
 
                     <!-- Địa chỉ -->
                     <div class="form-group col-md-4">
-                        <label for="address">📍 Địa chỉ</label>
+                        <label for="address">Địa chỉ</label>
                         <input
                             type="text"
                             class="form-control"
@@ -59,7 +59,7 @@
 
                     <!-- Giá phòng tối đa -->
                     <div class="form-group col-md-4">
-                        <label for="priceRange">💰 Mức giá</label>
+                        <label for="priceRange">Mức giá</label>
                         <select class="form-control" id="priceRange" name="priceRange">
                             <option value="" ${param.priceRange == null || param.priceRange == '' ? 'selected' : ''}>-- Tất cả --</option>
                             <option value="1" ${param.priceRange == '1' ? 'selected' : ''}>Dưới 1.000.000 VNĐ</option>
@@ -70,7 +70,7 @@
 
                     <!-- Số phòng còn trống -->
                     <div class="form-group col-md-3">
-                        <label for="minRooms">🛏️ Phòng trống tối thiểu</label>
+                        <label for="minRooms">Phòng trống tối thiểu</label>
                         <input
                             type="text"
                             class="form-control"
