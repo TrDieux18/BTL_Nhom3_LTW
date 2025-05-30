@@ -45,9 +45,9 @@ public class LoginServlet extends HttpServlet {
             if (user != null) {
                 request.getSession().setAttribute("user", user);
                 if (user.getRoleId() == 2) {
-                    response.sendRedirect("home"); // User bình thường
+                    response.sendRedirect("home"); 
                 } else if (user.getRoleId() == 1) {
-                    response.sendRedirect("management"); // Admin
+                    response.sendRedirect("management"); 
                 }
             } else {
                 if ("modal".equals(source)) {

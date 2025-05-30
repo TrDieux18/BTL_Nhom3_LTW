@@ -156,7 +156,7 @@
                                     </select>
 
                                     <button type="submit" class="btn btn-success"><i class="fa-solid fa-magnifying-glass"></i> Tìm kiếm</button>
-                                    <a href="${pageContext.request.contextPath}/hotel" class="btn btn-secondary"><i class="fa-solid fa-rotate"></i> Reset</a>
+                                    <a href="${pageContext.request.contextPath}/hotel?tab=hotel&action=search" class="btn btn-secondary"><i class="fa-solid fa-rotate"></i> Reset</a>
                                 </div>
                             </form>
 
@@ -252,7 +252,7 @@
                                         <option value="phonenumber" <%= "phonenumber".equals(request.getParameter("sortBy")) ? "selected" : "" %>>Số điện thoại</option>
                                     </select>
                                     <button type="submit" class="btn btn-success"><i class="fa-solid fa-magnifying-glass"></i> Tìm kiếm</button>
-                                    <a href="${pageContext.request.contextPath}/userServlet?tab=customer" class="btn btn-secondary"><i class="fa-solid fa-rotate"></i> Reset</a>
+                                    <a href="${pageContext.request.contextPath}/userServlet?tab=customer&action=search" class="btn btn-secondary"><i class="fa-solid fa-rotate"></i> Reset</a>
                                 </div>
                             </form>
 
@@ -294,7 +294,7 @@
                                                     <i class="fa-solid fa-trash"></i>
                                                 </a>
                                                 <a href="<%= request.getContextPath() %>/userServlet?action=edit&id=<%= u.getId() %>" class="btn btn-info"><i class="fa-solid fa-pen-to-square"></i></a>
-                                                <% } else { %>
+                                                    <% } else { %>
                                                 Không có quyền
                                                 <% } %>
 
@@ -341,7 +341,7 @@
                                         <option value="userName" ${param.sortBy == 'userName' ? 'selected' : ''}>Tên người đặt</option>
                                     </select>
                                     <button type="submit" class="btn btn-success"><i class="fa-solid fa-magnifying-glass"></i> Tìm kiếm</button>
-                                    <a href="${pageContext.request.contextPath}/bookingHistory" class="btn btn-secondary"><i class="fa-solid fa-rotate"></i> Reset</a>
+                                    <a href="${pageContext.request.contextPath}/bookingHistory?tab=bookingHistory&action=search" class="btn btn-secondary"><i class="fa-solid fa-rotate"></i> Reset</a>
                                 </div>
                             </form>
 
@@ -398,7 +398,7 @@
                                             <td><%= bh.getQuantity() %></td>
                                             <td><%= bh.getTotalPrice() %></td>
 
-<!--                                            
+
                                         </tr>
                                         <%      }
                                             } else {
@@ -456,68 +456,79 @@
                             </table>
                             <% } %>
                         </div>
-
-
-
+                        <!--
+                        
+                        
                         <!--Nội dung đặt khách sạn-->
                         <div class="tab-content" id="hotelBooking" style="display: none">
                             <h2 class="text-center inner-desc text-dark">Lịch sử đặt khách sạn</h2>
-                            <form action="${pageContext.request.contextPath}/hotelBooking" method="get" class="row g-3 mb-4" style="display: flex; gap: 15px; align-items: center; justify-content: center;">
+
+                            <!-- Form tìm kiếm -->
+                            <form action="${pageContext.request.contextPath}/hotelBooking" method="get" 
+                                  class="row g-3 mb-4" 
+                                  style="display: flex; gap: 15px; align-items: center; justify-content: center;">
+
+                                <!-- Đảm bảo giữ tab sau khi submit -->
                                 <input type="hidden" name="tab" value="hotelBooking" />
                                 <input type="hidden" name="action" value="search" />
 
                                 <div class="col-md-3">
-                                    <input type="text" class="form-control" name="userName" placeholder="Tên người đặt" value="${param.userName != null ? param.userName : ''}">
+                                    <input type="text" class="form-control" name="userName" placeholder="Tên người đặt" 
+                                           value="${param.userName != null ? param.userName : ''}">
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="text" class="form-control" name="hotelName" placeholder="Tên khách sạn" value="${param.hotelName != null ? param.hotelName : ''}">
+                                    <input type="text" class="form-control" name="hotelName" placeholder="Tên khách sạn" 
+                                           value="${param.hotelName != null ? param.hotelName : ''}">
                                 </div>
 
-                                <div class="col-md-4"  style=" display: flex; gap: 15px;">
+                                <div class="col-md-4" style="display: flex; gap: 15px;">
                                     <select class="form-select" name="sortBy" style="height: 38px; width: 180px; min-width: 150px; max-width: 220px; padding: 5px 10px; font-size: 1rem; border-radius: 4px; border: 1px solid #ced4da; transition: border-color 0.3s ease;">
                                         <option value="" ${param.sortBy == null || param.sortBy == '' ? 'selected' : ''}>-- Sắp xếp --</option>
                                         <option value="roomQuantity" ${param.sortBy == 'roomQuantity' ? 'selected' : ''}>Số lượng phòng</option>
                                         <option value="totalPrice" ${param.sortBy == 'totalPrice' ? 'selected' : ''}>Tổng tiền</option>
                                     </select>
-                                    <button type="submit" class="btn btn-success"><i class="fa-solid fa-magnifying-glass"></i> Tìm kiếm</button>
-                                    <a href="${pageContext.request.contextPath}/hotelBooking" class="btn btn-secondary"><i class="fa-solid fa-rotate"></i> Reset</a>
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="fa-solid fa-magnifying-glass"></i> Tìm kiếm
+                                    </button>
+
+
+                                    <a href="${pageContext.request.contextPath}/hotelBooking?tab=hotelBooking&action=search" class="btn btn-secondary">
+                                        <i class="fa-solid fa-rotate"></i> Reset
+                                    </a>
+
                                 </div>
                             </form>
+
+                            <!-- Bảng dữ liệu -->
                             <div class="inner-table">
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th scope="col">STT</th>
-                                            <th scope="col">Tên người đặt</th>
-                                            <th scope="col">Tên khách sạn</th>
-                                            <th scope="col">Ngày nhận phòng</th>
-                                            <th scope="col">Ngày trả phòng</th>
-                                            <th scope="col">Số lượng phòng</th>
-                                            <th scope="col">Tổng tiền</th>
-
-                                            <th scope="col">Trạng thái</th>
-                                            <th scope="col">Ghi chú</th>
-
-                                            <!--<th scope="col">Thao tác</th>-->
+                                            <th>STT</th>
+                                            <th>Tên người đặt</th>
+                                            <th>Tên khách sạn</th>
+                                            <th>Ngày nhận phòng</th>
+                                            <th>Ngày trả phòng</th>
+                                            <th>Số lượng phòng</th>
+                                            <th>Tổng tiền</th>
+                                            <th>Trạng thái</th>
+                                            <th>Ghi chú</th>
                                         </tr>
                                     </thead>
                                     <tbody id="hotelBookingList">
                                         <%
                                             List<HotelBooking> hbs = (List<HotelBooking>) request.getAttribute("hotelBookings");
                                             int hbsIndex = 1;
-                                            if (hbs != null) {
+                                            if (hbs != null && !hbs.isEmpty()) {
                                                 for (HotelBooking hb : hbs) {
                                         %>
                                         <tr>
-                                            <th scope="row"><%= hbsIndex++ %></th>
-
-                                            <td><%=hb.getUserName() %></td>
+                                            <td><%= hbsIndex++ %></td>
+                                            <td><%= hb.getUserName() %></td>
                                             <td><%= hb.getHotelName() %></td>
                                             <td><%= hb.getCheckInDate() %></td>
                                             <td><%= hb.getCheckOutDate() %></td>
-
                                             <td><%= hb.getRoomQuantity() %></td>
-
                                             <td><%= hb.getTotalPrice() %></td>
                                             <td><%= hb.getStatus() %></td>
                                             <td><%= hb.getNotes() %></td>
@@ -526,7 +537,9 @@
                                                 }
                                             } else {
                                         %>
-                                        <tr><td colspan="10">Không có lịch sử nào.</td></tr>
+                                        <tr>
+                                            <td colspan="9" class="text-center">Không có lịch sử nào.</td>
+                                        </tr>
                                         <%
                                             }
                                         %>
@@ -534,6 +547,7 @@
                                 </table>
                             </div>
                         </div>
+
 
                     </div>
                 </div>
