@@ -47,9 +47,9 @@
                                 <ul>
                                     <li><a href="#">Vé máy bay</a></li>
                                     <li><a href="${pageContext.request.contextPath}/hotelList">Khách sạn</a></li>
-                                    <li><a href="#">Khuyến mãi</a></li>
-                                    <li><a href="#">Đơn hàng</a></li>
+                                    <li><a href="#">Khuyến mãi</a></li>                               
                                     <li><a href="deal">Ưu đãi</a></li>
+                                    <li><a href="help">Hỗ trợ</a></li>
                                 </ul>
                             </div>
                             <span style="margin-right: 150px"></span>

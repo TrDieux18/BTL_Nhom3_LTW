@@ -52,8 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 flight.style.display = 'block';
             }
         });
-        
-        // Cập nhật text của button
+
         if (internationalVisibleCount >= internationalFlights.length) {
             toggleBtnInternational.textContent = 'Ẩn bớt';
         } else {
@@ -82,14 +81,12 @@ document.addEventListener('DOMContentLoaded', function() {
 function toggleFaq(button) {
             const answer = button.nextElementSibling;
             const isActive = button.classList.contains('active');
-            
-            // Đóng tất cả FAQ khác
+
             document.querySelectorAll('.faq-question').forEach(q => {
                 q.classList.remove('active');
                 q.nextElementSibling.classList.remove('show');
             });
-            
-            // Toggle FAQ hiện tại
+
             if (!isActive) {
                 button.classList.add('active');
                 answer.classList.add('show');

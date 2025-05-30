@@ -17,7 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author DELL
  */
-@WebServlet({"/log", "/reg","/home","/profile","/password","/c_profile","/deals"}) // Ánh xạ nhiều URL
+@WebServlet({"/log", "/reg","/home","/profile","/password","/c_profile","/deals","/help","/thanks"}) // Ánh xạ nhiều URL
 public class ControllerServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     /**
@@ -78,6 +78,12 @@ public class ControllerServlet extends HttpServlet {
                 break;  
             case "/deals":
                 request.getRequestDispatcher("Uudai.jsp").forward(request, response);
+                break;  
+            case "/help":
+            request.getRequestDispatcher("hotro.jsp").forward(request, response);
+            break;  
+            case "/thanks":
+                request.getRequestDispatcher("thanks.jsp").forward(request, response);
                 break;  
             default:               
                 break;
