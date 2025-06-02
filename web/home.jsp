@@ -165,7 +165,7 @@
                 <div class="hotel-list" id="ticket-recommended">
                     <c:forEach var="ticket" items="${recommendedTickets}">
                         <div class="box-hotel">
-                            <a href="detailTicket?ticketId=${ticket.id}" class="text-decoration-none">
+                            <a href="ticketDetail?ticketId=${ticket.id}" class="text-decoration-none">
                                 <div class="card h-100 hotel-card">
                                     <img src="${ticket.image != null ? ticket.image : './assets/images/default-ticket.jpg'}" alt="${ticket.airline}" class="card-img-top" />
                                     <div class="card-body">
@@ -209,7 +209,7 @@
                 <div class="hotel-list" id="ticket-promo">
                     <c:forEach var="ticket" items="${discountTickets}">
                         <div class="box-hotel">
-                            <a href="detailTicket?ticketId=${ticket.id}" class="text-decoration-none">
+                            <a href="ticketDetail?ticketId=${ticket.id}" class="text-decoration-none">
                                 <div class="card h-100 hotel-card">
                                     <img src="${ticket.image != null ? ticket.image : './assets/images/default-ticket.jpg'}" alt="${ticket.airline}" class="card-img-top" />
                                     <div class="card-body">
